@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title></title>
+	    <link href="../css/mui.min.css" rel="stylesheet"/>
+	    <style type="text/css">
+	    	/*要想实现整个页面都是透明的，需要将body以及带有背景
+	    	 *颜色的元素全部设置 background: transparent */
+		    body{
+		    	background: transparent;
+		    }
+			.mui-pop{
+				position: fixed;
+				bottom: 100px;
+				margin: 0px;
+				padding: 0px;
+			}
+			.mui-pop li{
+				display: inline-block;
+				width: 24%;
+				margin: 10px 0px;
+				padding: 0px;
+				list-style: none;
+				text-align: center;
+			}
+			.mui-pop li a{
+				display: inline-block;
+				width: 100%;
+				color: #fff;
+			}
+			.mui-pop li a img{
+				width: 80%;
+			}
+			.closeBtn{
+				position: fixed;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
+				text-align: center;
+				background-color: #fff;
+				cursor: pointer;
+			}
+			.closeBtn span{	
+				color: #ff7e00;	
+				font-size: 50px;
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">
+	        <ul class="mui-pop">
+	            <li>
+	            	<a href="#editor">
+	                    <img src="../img/i-editor.png"/>
+	                    <div class="mui-media-body">文字</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#picture">
+	                    <img src="../img/i-picture.png"/>
+	                    <div class="mui-media-body">照片/视频</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#headline">
+	                    <img src="../img/i-headline.png"/>
+	                    <div class="mui-media-body">头条文章</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#location">
+	                    <img src="../img/i-location.png"/>
+	                    <div class="mui-media-body">签到</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#camera">
+	                    <img src="../img/i-camera.png"/>
+	                    <div class="mui-media-body">直播</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#message">
+	                    <img src="../img/i-message.png"/>
+	                    <div class="mui-media-body">消息</div>
+	            	</a>
+	            </li>
+	             <li>
+	            	<a href="#share">
+	                    <img src="../img/i-share.png"/>
+	                    <div class="mui-media-body">分享</div>
+	            	</a>
+	            </li>
+	            <li>
+	            	<a href="#more">
+	                    <img src="../img/i-more.png"/>
+	                    <div class="mui-media-body">更多</div>
+	            	</a>
+	            </li>
+	        </ul>
+	        
+	        <div class="mui-action-back closeBtn">
+	        	<span class="mui-icon mui-icon-closeempty"></span>
+	        </div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">	
+			// 获取关键词
+			mui(".mui-pop li").on('tap','a',function(){ 
+				var keyword = this.getAttribute('href').replace('#','');
+				mui.alert(keyword);
+				// ...
+			})
+		
+			/*
+			 * 这里重写mui.back()方法，在需要执行关闭命令的地方
+			 * 加上 mui-action-back 类，可以绑定back()方法。
+			 */
+			mui.back = function(){
+				// 隐藏弹出层
+				plus.webview.currentWebview().hide();
+				// 隐藏遮罩
+				plus.webview.getWebviewById('mask').close();
+			}
+		</script>
+	</body>
+</html>

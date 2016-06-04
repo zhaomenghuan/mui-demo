@@ -1,0 +1,84 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"html/home.html",
+			"html/popover.html",
+			"img/i-star.png",
+			"img/i-home-active.png",
+			"img/i-find.png",
+			"img/i-person.png",
+			"img/i-pop.png"
+		],
+		"refer": [
+			"html/setting.html",
+			"html/message.html",
+			"html/home.html",
+			"html/popover.html",
+			"html/find.html",
+			"html/tabbar.html"
+		]
+	},
+	"html/popover.html": {
+		"resources": [
+			"img/icon2.png",
+			"img/icon4.png",
+			"img/icon6.png",
+			"img/icon5.png",
+			"img/icon3.png",
+			"img/icon1.png",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"img/i-picture.png",
+			"img/i-location.png",
+			"img/i-camera.png",
+			"img/i-editor.png",
+			"img/i-headline.png",
+			"img/i-more.png",
+			"img/i-message.png",
+			"img/i-share.png"
+		]
+	},
+	"html/home.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/shuijiao.jpg"
+		]
+	},
+	"html/setting.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/message.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/tabbar.html": {
+		"resources": [
+			"img/i-person.png",
+			"fonts/mui.ttf",
+			"img/i-star.png",
+			"img/i-pop.png",
+			"img/i-home-active.png",
+			"img/i-find.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/i-pop-active.png",
+			"img/i-find-active.png",
+			"img/i-star-active.png",
+			"img/i-person-active.png",
+			"img/i-home.png"
+		],
+		"refer": [
+			"html/popover.html"
+		]
+	}
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <style>
+			html,body {
+				background-color: #efeff4;
+			}
+			.title{
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			img{
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content">
+			<div class="title">
+				<p>这是webview模式选项卡的第1个子页面</p>
+				<p>何谓webview模式？其实就是每个选项卡内容都是一个独立的webview，彼此之间互相独立、互不影响；
+					对于较为复杂的业务系统，推荐使用该模式。</p>
+				<p>本例子将弹出菜单放在一个子webview中，使用预加载，设置窗口样式为透明并且设置弹出菜单的内容也是透明的。</p>
+				<img src="../img/shuijiao.jpg"/>
+				<img src="../img/shuijiao.jpg"/>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+	</script>
+</html>

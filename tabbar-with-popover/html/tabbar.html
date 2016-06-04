@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+    	<style type="text/css">
+	    	body{
+	    		background: transparent;
+	    	}
+	    	.mui-bar{
+	    		border-top: 1px solid #eb4f38;
+	    		box-shadow: none;
+	    	}
+	    	a .mui-tab-label{  		
+	    		color: #a9b7b7;
+	    	}
+	    	a.mui-active .mui-tab-label{
+	    		color: #eb4f38;
+	    	}	    	
+	    	.mui-tabbar-center{
+	    		display: table-cell;
+				overflow: hidden;
+				width: 1%;
+				height: 50px;
+				text-align: center;
+				vertical-align: middle;
+	    	}
+	    	.mui-tabbar-center img{
+	    		position: absolute;
+	    		left: 50%;
+	    		bottom: 0px;
+	    		width: 60px;
+	    		height: 60px;
+	    		margin-left: -30px;
+	    	}
+	    </style>
+	</head>
+	<body>
+		<nav class="mui-bar mui-bar-tab mui-botton-bar">
+			<a class="mui-tab-item mui-active" href="html/home.html">
+				<img class="mui-icon" src="../img/i-home-active.png"/>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="html/message.html">
+				<img class="mui-icon" src="../img/i-star.png"/>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tabbar-center" href="popover.html">
+				<img src="../img/i-pop-active.png"/>
+			</a>
+			<a class="mui-tab-item" href="html/find.html">
+				<img  class="mui-icon" src="../img/i-find.png"/>
+				<span class="mui-tab-label">发现</span>
+			</a>
+			<a class="mui-tab-item" href="html/setting.html">
+				<img class="mui-icon" src="../img/i-person.png"/>
+				<span class="mui-tab-label">个人</span>
+			</a>
+		</nav>	
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			//mui初始化
+			mui.init();
+			
+			//弹出菜单
+			var popWebview;
+			var popTab = 'popover.html';
+			mui.plusReady(function(){	
+				//预加载弹出菜单子页面
+				popWebview = mui.preload({
+				    url:popTab,
+				    id:popTab,
+				    styles:{
+				    	top: '0px',
+				      	bottom: '0px',
+				      	background: 'transparent'
+				    }
+				});
+			})
+			
+			//选项卡点击事件
+			mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				// 获取当前点击的选项
+				var targetTab = this.getAttribute('href');	
+				// 如果点击中间的菜单栏弹出菜单
+				if(targetTab == popTab){
+					// 创建mask遮罩
+					plus.webview.create("","mask",{
+						mask:"rgba(0,0,0,0.4)",
+						background: "transparent"
+					}).show();
+					// 打开弹出层
+					plus.webview.show(popWebview,"slide-in-bottom",300);
+					return;
+				}
+				
+				//当前选项值传到父webview
+				var currWs = plus.webview.currentWebview();	
+				var targetTitle = this.querySelector('.mui-tab-label').innerHTML;
+				//触发详情页面的newsId事件
+				mui.fire(currWs.parent(),'targetTab',{
+					targetTitle:targetTitle,
+				    targetTab:targetTab
+				});
+				
+				/**
+				 * 下面这部分非每个项目必须的，因为这里为了给
+				 * 大家演示怎么用图片作为图标而不用字体图标。
+				 */	
+				// 获取图标对象
+				var targetIcon=mui(this.children)[0];
+				//初始化
+				mui('.mui-bar-tab .mui-tab-item img').each(function (index,item) {
+					var itemSrc = item.getAttribute('src');
+					if(itemSrc.indexOf('active')){
+						item.src = itemSrc.replace('-active.png','.png');
+					}
+				});
+				//设置当前的图标
+				targetIcon.src = targetIcon.getAttribute('src').replace('.png','-active.png');	
+			});
+		</script>
+	</body>
+</html>
