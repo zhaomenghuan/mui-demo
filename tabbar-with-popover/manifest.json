@@ -231,7 +231,8 @@
 					"img/i-headline.png",
 					"img/i-more.png",
 					"img/i-message.png",
-					"img/i-share.png"
+					"img/i-share.png",
+					null
 				],
 				"refer": [],
 				"priority": 0
