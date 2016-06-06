@@ -1,41 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <script src="../js/mui.min.js"></script>
-    <link href="../css/mui.min.css" rel="stylesheet"/>
-    <style>
-			html,body {
-				background-color: #efeff4;
-			}
-			.title{
-				margin: 20px 15px 10px;
-				color: #6d6d72;
-				font-size: 15px;
-			}
-			img{
-				width: 100%;
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<style type="text/css">
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0px;
 			}
 		</style>
 	</head>
+
 	<body>
 		<div class="mui-content">
-			<div class="title">
-				<p>这是webview模式选项卡的第1个子页面</p>
-				<p>何谓webview模式？其实就是每个选项卡内容都是一个独立的webview，彼此之间互相独立、互不影响；
-					对于较为复杂的业务系统，推荐使用该模式。</p>
-				<p>本例子将弹出菜单放在一个子webview中，使用预加载，设置窗口样式为透明并且设置弹出菜单的内容也是透明的。</p>
-				<img src="../img/shuijiao.jpg"/>
-				<img src="../img/shuijiao.jpg"/>
-			</div>
+			<ul id="list" class="mui-table-view mui-table-view-chevron"></ul>
 		</div>
 	</body>
-	<script src="../js/mui.min.js"></script>
+	
+	<script src="../js/mui.min.js "></script>
+	<script src="../js/mui.lazyload.js"></script>
+	<script src="../js/mui.lazyload.img.js"></script>
 	<script>
-		mui.init({
-			swipeBack:true //启用右滑关闭功能
+		mui.init();
+		
+		var url = "http://s.music.163.com/search/get/";       
+        mui.ajax(url,{
+			data: {
+                'type': 1,
+                's': "喜欢你",
+                'limit': 10
+            },
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				//console.log(JSON.stringify(data));
+				var songs=data.result.songs;
+
+				var list = document.getElementById("list");
+				var fragment = document.createDocumentFragment();
+				var li;
+				mui.each(songs,function(index,item){
+				    //console.log(JSON.stringify(item.album.picUrl));
+				     var id = item.id,
+				        name = item.album.name,
+				        author = item.artists[0].name,
+				    	picUrl = item.album.picUrl,
+				    	audio = item.audio;	  
+				    	
+				    li = document.createElement('li');
+					li.className = 'mui-table-view-cell mui-media';
+					li.innerHTML = '<a class="mui-navigate-right" id='+ id +' data-audio='+ audio +'>'+
+					    				'<img class="mui-media-object mui-pull-left" data-lazyload="'+picUrl+'">'+
+					    				'<div class="mui-media-body">'+name+
+					    					'<p class="mui-ellipsis">'+author+'</p>'+
+					    				'</div>'+
+					    			'</a>';
+					fragment.appendChild(li);
+				})
+				
+				list.appendChild(fragment)
+				
+				mui(document).imageLazyload({
+					placeholder: '../img/lazyload.gif'
+				});
+			},
+			error:function(xhr,type,errorThrown){
+				//异常处理；
+				console.log(type);
+			}
+		});
+		
+	    //列表点击事件
+		mui("#list").on('tap','li a',function(){
+			var id = this.getAttribute('id');
+			var audio = this.getAttribute('data-audio');
+			//打开详情页面
+			mui.openWindow({
+				url:'music.html',
+			    id:'music.html',
+			    extras:{
+			        musicId:id,
+			        audioUrl:audio
+			    }
+			});
 		});
 	</script>
 </html>

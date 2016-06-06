@@ -40,7 +40,7 @@
 	</head>
 	<body>
 		<nav class="mui-bar mui-bar-tab mui-botton-bar">
-			<a class="mui-tab-item mui-active" href="html/home.html">
+			<a id="defaultTab" class="mui-tab-item mui-active" href="html/home.html">
 				<img class="mui-icon" src="../img/i-home-active.png"/>
 				<span class="mui-tab-label">首页</span>
 			</a>
@@ -86,43 +86,58 @@
 			mui('.mui-bar-tab').on('tap', 'a', function(e) {			
 				// 获取当前点击的选项
 				var targetTab = this.getAttribute('href');	
+				
 				// 如果点击中间的菜单栏弹出菜单
 				if(targetTab == popTab){
-					// 创建mask遮罩
-					plus.webview.create("","mask",{
-						mask:"rgba(0,0,0,0.4)",
-						background: "transparent"
-					}).show();
-					// 打开弹出层
-					plus.webview.show(popWebview,"slide-in-bottom",300);
+					if(window.plus){
+						// 创建mask遮罩
+						plus.webview.create("","mask",{
+							mask:"rgba(0,0,0,0.4)",
+							background: "transparent"
+						}).show();
+						// 打开弹出层
+						plus.webview.show(popWebview,"slide-in-bottom",300);	
+					}else{
+						mui.alert("请在html5+引擎环境使用");
+					}
 					return;
 				}
 				
-				//当前选项值传到父webview
-				var currWs = plus.webview.currentWebview();	
-				var targetTitle = this.querySelector('.mui-tab-label').innerHTML;
-				//触发详情页面的newsId事件
-				mui.fire(currWs.parent(),'targetTab',{
-					targetTitle:targetTitle,
-				    targetTab:targetTab
-				});
-				
-				/**
-				 * 下面这部分非每个项目必须的，因为这里为了给
-				 * 大家演示怎么用图片作为图标而不用字体图标。
-				 */	
+				// 当前选项值传到父webview
+				if(window.plus){
+					var currWs = plus.webview.currentWebview();	
+					var targetTitle = this.querySelector('.mui-tab-label').innerHTML;
+					// 触发详情页面的targetTab事件
+					mui.fire(currWs.parent(),'targetTab',{
+						targetTitle:targetTitle,
+					    targetTab:targetTab
+					});
+				}
+
 				// 获取图标对象
 				var targetIcon=mui(this.children[0])[0];
-				console.log(this.children[0].nodeName)
-				//初始化
+				// 初始化
 				mui('.mui-bar-tab .mui-tab-item img').each(function (index,item) {
 					var itemSrc = item.getAttribute('src');
 					if(itemSrc.indexOf('active')){
 						item.src = itemSrc.replace('-active.png','.png');
 					}
 				});
-				//设置当前的图标
+				// 设置当前的图标
 				targetIcon.src = targetIcon.getAttribute('src').replace('.png','-active.png');	
+			});
+			
+			// 自定义事件，模拟点击"首页选项卡"
+			document.addEventListener('gohome', function() {
+				var defaultTab = document.getElementById("defaultTab");
+				// 模拟首页点击
+				mui.trigger(defaultTab, 'tap');
+				// 切换选项卡高亮
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if (defaultTab !== current) {
+					current.classList.remove('mui-active');
+					defaultTab.classList.add('mui-active');
+				}
 			});
 		</script>
 	</body>

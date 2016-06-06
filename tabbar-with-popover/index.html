@@ -7,6 +7,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
 </head>
 	<body>
         <header class="mui-bar mui-bar-nav">
@@ -35,11 +36,12 @@
 				background: "transparent",
 				zindex:999
 			}
-
+			
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function(){
 				//获取当前webview作为父webview
 				var self = plus.webview.currentWebview();
+				
 				//创建子页
 				var length = subpages.length;
 				for (var i = 0; i < length; i++) {
@@ -50,6 +52,7 @@
 					}
 					self.append(sub);
 				}
+				
 				//创建底部栏
 				var tw = plus.webview.create(tabbar,tabbar,tabbar_style);
 				self.append(tw);
@@ -62,11 +65,12 @@
 			  	// 获得选项卡点击事件参数
 			  	var targetTitle = event.detail.targetTitle;
 			  	var targetTab = event.detail.targetTab;
-			  	//如果为当前选项则返回
+			  	
+			  	// 如果为当前选项则返回
 			  	if (targetTab == activeTab) return;
 			  	
-				//更换标题
-				document.querySelector(".mui-title").innerHTML = targetTitle;
+				// 更换标题
+				document.querySelector(".mui-title").innerHTML = targetTitle;	
 				//显示目标选项卡
 				plus.webview.show(targetTab);
 				//隐藏当前;

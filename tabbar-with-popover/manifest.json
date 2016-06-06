@@ -203,13 +203,14 @@
 					"img/i-home-active.png",
 					"img/i-find.png",
 					"img/i-person.png",
-					"img/i-pop.png"
+					"img/i-pop.png",
+					"html/tabbar.html",
+					"css/app.css"
 				],
 				"refer": [
 					"html/setting.html",
 					"html/message.html",
-					"html/find.html",
-					"html/tabbar.html"
+					"html/find.html"
 				],
 				"priority": 0
 			},
@@ -241,9 +242,16 @@
 				"resources": [
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"img/shuijiao.jpg"
+					"img/shuijiao.jpg",
+					"img/lazyload.gif",
+					"js/mui.lazyload.js",
+					"js/mui.lazyload.img.js",
+					"fonts/mui.ttf",
+					"css/app.css"
 				],
-				"refer": [],
+				"refer": [
+					"html/music.html"
+				],
 				"priority": 0
 			},
 			"html/setting.html": {
@@ -281,6 +289,14 @@
 				"refer": [
 					"html/popover.html"
 				],
+				"priority": 0
+			},
+			"html/music.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
 				"priority": 0
 			}
 		},
