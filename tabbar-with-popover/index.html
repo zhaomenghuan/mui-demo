@@ -6,17 +6,25 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
     <link rel="stylesheet" href="css/mui.min.css">
+    <!--App自定义的css-->
     <link rel="stylesheet" type="text/css" href="css/app.css"/>
 </head>
 	<body>
         <header class="mui-bar mui-bar-nav">
+        	<a class="mui-icon mui-icon-bars mui-pull-left"></a>
 			<h1 class="mui-title">首页</h1>
+			<div class="mui-segmented-control" style="display: none;">
+				<a class="mui-control-item mui-active">消息</a>
+				<a class="mui-control-item">好友</a>
+			</div>
+			<a class="mui-icon mui-icon-plus mui-pull-right"></a>
 		</header>	
 
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript" charset="utf-8">
-			//mui初始化
+			// mui初始化
 			mui.init();
 			
 			// 子页参数
@@ -24,8 +32,7 @@
 			var subpages = ['html/home.html','html/message.html','html/find.html','html/setting.html'];
 			var subpage_style = {
 				top: '45px',
-				bottom: '50px',
-				zindex:99
+				bottom: '50px'
 			};
 			
 			// 底部导航栏
@@ -37,25 +44,18 @@
 				zindex:999
 			}
 			
-			//创建子页面，首个选项卡页面显示，其它均隐藏；
+			// 创建当前子页面，首个选项卡页面显示
 			mui.plusReady(function(){
 				//获取当前webview作为父webview
 				var self = plus.webview.currentWebview();
-				
-				//创建子页
-				var length = subpages.length;
-				for (var i = 0; i < length; i++) {
-					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
-					sub.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});
-					if (i != Index) {
-						sub.hide();
-					}
-					self.append(sub);
-				}
-				
-				//创建底部栏
+				// 创建底部栏
 				var tw = plus.webview.create(tabbar,tabbar,tabbar_style);
 				self.append(tw);
+				// 创建当前指定子页
+				var subIndex = plus.webview.create(subpages[Index], subpages[Index], subpage_style);
+				subIndex.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});								
+				self.append(subIndex);
+				plus.webview.show(subIndex,"fade-in",300);
 			})
 			
 			//当前激活选项
@@ -69,10 +69,25 @@
 			  	// 如果为当前选项则返回
 			  	if (targetTab == activeTab) return;
 			  	
-				// 更换标题
-				document.querySelector(".mui-title").innerHTML = targetTitle;	
-				//显示目标选项卡
-				plus.webview.show(targetTab);
+			  	// 更换标题
+			  	if (targetTab == subpages[1]) {
+			  		mui(".mui-title")[0].style.display = 'none';
+					mui(".mui-segmented-control")[0].style.display = 'block';
+			  	}else{
+			  		mui(".mui-title")[0].style.display = 'block';
+					mui(".mui-segmented-control")[0].style.display = 'none';
+					mui(".mui-title")[0].innerHTML = targetTitle;
+			  	}	
+				
+				if(!plus.webview.getWebviewById(targetTab)){
+					var sub = plus.webview.create(targetTab, targetTab, subpage_style);
+					sub.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});
+					plus.webview.currentWebview().append(sub);
+					plus.webview.show(sub,"fade-in",300);
+				}else{
+					//显示目标选项卡
+					plus.webview.show(targetTab);
+				}			
 				//隐藏当前;
 				plus.webview.hide(activeTab);
 				//更改当前活跃的选项卡

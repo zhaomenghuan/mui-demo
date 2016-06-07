@@ -1,6 +1,27 @@
 header.mui-bar{
-	background-color: #eb4f38
+	background-color: #eb4f38;
 }
-header.mui-bar .mui-title{
-	color: #FFFFFF;
+header.mui-bar .mui-title,
+header.mui-bar a.mui-icon{
+	color: #ffffff;
+}
+
+/**
+ * 顶部选项卡
+ */
+.mui-segmented-control{
+	padding: 0px;
+	width: 150px !important;
+	height: 30px;
+	border: 1px solid #fff;
+}
+.mui-segmented-control .mui-control-item{
+	color: #fff !important;
+	line-height: 30px;
+	width: 75px;
+	border-left: 1px solid #eb4f38;
+}
+.mui-segmented-control .mui-control-item.mui-active{
+	color: #eb4f38 !important;
+	background-color: #fff;
 }

@@ -45,10 +45,10 @@
 				<span class="mui-tab-label">首页</span>
 			</a>
 			<a class="mui-tab-item" href="html/message.html">
-				<img class="mui-icon" src="../img/i-star.png"/>
+				<img class="mui-icon" src="../img/i-message.png"/>
 				<span class="mui-tab-label">消息</span>
 			</a>
-			<a class="mui-tabbar-center" href="popover.html">
+			<a class="mui-tabbar-center" href="menu.html">
 				<img src="../img/i-pop-active.png"/>
 			</a>
 			<a class="mui-tab-item" href="html/find.html">
@@ -67,13 +67,13 @@
 			mui.init();
 			
 			//弹出菜单
-			var popWebview;
-			var popTab = 'popover.html';
+			var menuWebview;
+			var menuTab = 'menu.html';
 			mui.plusReady(function(){	
 				//预加载弹出菜单子页面
-				popWebview = mui.preload({
-				    url:popTab,
-				    id:popTab,
+				menuWebview = mui.preload({
+				    url:menuTab,
+				    id:menuTab,
 				    styles:{
 				    	top: '0px',
 				      	bottom: '0px',
@@ -88,7 +88,7 @@
 				var targetTab = this.getAttribute('href');	
 				
 				// 如果点击中间的菜单栏弹出菜单
-				if(targetTab == popTab){
+				if(targetTab == menuTab){
 					if(window.plus){
 						// 创建mask遮罩
 						plus.webview.create("","mask",{
@@ -96,24 +96,13 @@
 							background: "transparent"
 						}).show();
 						// 打开弹出层
-						plus.webview.show(popWebview,"slide-in-bottom",300);	
+						plus.webview.show(menuWebview,"slide-in-bottom",300);	
 					}else{
 						mui.alert("请在html5+引擎环境使用");
 					}
 					return;
 				}
 				
-				// 当前选项值传到父webview
-				if(window.plus){
-					var currWs = plus.webview.currentWebview();	
-					var targetTitle = this.querySelector('.mui-tab-label').innerHTML;
-					// 触发详情页面的targetTab事件
-					mui.fire(currWs.parent(),'targetTab',{
-						targetTitle:targetTitle,
-					    targetTab:targetTab
-					});
-				}
-
 				// 获取图标对象
 				var targetIcon=mui(this.children[0])[0];
 				// 初始化
@@ -125,6 +114,17 @@
 				});
 				// 设置当前的图标
 				targetIcon.src = targetIcon.getAttribute('src').replace('.png','-active.png');	
+				
+				// 当前选项值传到父webview
+				if(window.plus){
+					var currWs = plus.webview.currentWebview();	
+					var targetTitle = this.querySelector('.mui-tab-label').innerHTML;
+					// 触发详情页面的targetTab事件
+					mui.fire(currWs.parent(),'targetTab',{
+						targetTitle:targetTitle,
+					    targetTab:targetTab
+					});
+				}
 			});
 			
 			// 自定义事件，模拟点击"首页选项卡"

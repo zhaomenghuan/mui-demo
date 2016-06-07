@@ -4,30 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
-    <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
     <style>
-			html,body {
-				background-color: #efeff4;
-			}
-			.title{
-				margin: 20px 15px 10px;
-				color: #6d6d72;
-				font-size: 15px;
-			}
-		</style>
+		.mui-content>.mui-table-view:first-child {
+			margin-top: 0px;
+		}
+	</style>
 	</head>
 	<body>
 		<div class="mui-content">
-			<div class="title">
-				<p>这是webview模式选项卡的第2个子页面</p>
-			</div>
+		    <ul class="mui-table-view" id="message-list">
+		    	<!--<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="../img/lazyload.gif">
+						<div class="mui-media-body">
+							CBD
+							<p class='mui-ellipsis'>烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+						</div>
+					</a>
+				</li>-->
+				<li class="mui-table-view-cell mui-media" v-for="item in items">
+					<a href="javascript:;">
+						<img class="mui-media-object mui-pull-left" v-bind:src="item.avatar">
+						<div class="mui-media-body">
+							{{item.name}}
+							<p class='mui-ellipsis'>{{item.lastMsg}}</p>
+						</div>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		mui.init({
 			swipeBack:true //启用右滑关闭功能
 		});
+		
+		var messageList = new Vue({
+		  	el: '#message-list',
+		  	data: {
+		    	items: [
+		      		{
+		      			avatar: '../img/lazyload.gif',
+		      			name: '小青年',
+		      			lastMsg: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？' 
+		      		},
+		      		{
+		      			avatar: '../img/lazyload.gif',
+		      			name: '么么哒',
+		      			lastMsg: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？' 
+		      		}
+		    	]
+		  	}
+		})
 	</script>
 </html>

@@ -68,7 +68,9 @@
 	"html/message.html": {
 		"resources": [
 			"js/mui.min.js",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"js/vue.js",
+			"img/lazyload.gif"
 		]
 	},
 	"html/tabbar.html": {
@@ -85,13 +87,39 @@
 			"img/i-find-active.png",
 			"img/i-star-active.png",
 			"img/i-person-active.png",
-			"img/i-home.png"
+			"img/i-home.png",
+			"img/i-message.png",
+			"img/i-message-active.png"
 		],
 		"refer": [
-			"html/popover.html"
+			"html/popover.html",
+			"html/menu.html"
 		]
 	},
 	"html/music.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/menu.html": {
+		"resources": [
+			"img/i-picture.png",
+			"js/mui.min.js",
+			"img/i-location.png",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"img/i-camera.png",
+			"img/i-editor.png",
+			"img/i-message.png",
+			"img/i-headline.png",
+			"img/i-share.png",
+			"img/i-more.png",
+			"img/i-contactus.png",
+			"img/i-contact.png"
+		]
+	},
+	"html/find.html": {
 		"resources": [
 			"js/mui.min.js",
 			"css/mui.min.css"

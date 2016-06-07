@@ -41,14 +41,14 @@
 			type:'post',//HTTP请求类型
 			timeout:10000,//超时时间设置为10秒；
 			success:function(data){
-				//console.log(JSON.stringify(data));
+				// console.log(JSON.stringify(data));
 				var songs=data.result.songs;
 
 				var list = document.getElementById("list");
 				var fragment = document.createDocumentFragment();
 				var li;
 				mui.each(songs,function(index,item){
-				    //console.log(JSON.stringify(item.album.picUrl));
+				    // console.log(JSON.stringify(item.album.picUrl));
 				     var id = item.id,
 				        name = item.album.name,
 				        author = item.artists[0].name,
