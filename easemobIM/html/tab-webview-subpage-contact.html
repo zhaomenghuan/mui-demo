@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,body {
+				background-color: #efeff4;
+			}
+			 .oa-contact-cell.mui-table .mui-table-cell {
+				padding: 11px 0;
+				vertical-align: middle;
+			}
+			.oa-contact-cell {
+				position: relative;
+				margin: -11px 0;
+			}
+	
+			.oa-contact-avatar {
+				width: 75px;
+			}
+			.oa-contact-avatar img {
+				border-radius: 50%;
+			}
+			.oa-contact-content {
+				width: 100%;
+			}
+			.oa-contact-name {
+				margin-right: 20px;
+			}
+			.oa-contact-name, oa-contact-position {
+				float: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<!--内容-->
+			<ul id="roster-cnt" class="mui-table-view mui-table-view-striped mui-table-view-condensed"></ul>
+		</div>
+		
+		<!--模板-->
+		<script id="roster-tpl" type="text/html">
+			{{each roster as value index}}
+				<li class="mui-table-view-cell" data-chatname="{{value.name}}">
+					<div class="mui-slider-cell">
+						<div class="oa-contact-cell mui-table">
+							<div class="oa-contact-avatar mui-table-cell">
+								<img src="http://placehold.it/60x60" />
+							</div>
+							<div class="oa-contact-content mui-table-cell">
+								<div class="mui-clearfix">
+									<h4 class="oa-contact-name">小青年</h4>
+									<span class="oa-contact-position mui-h6">湖北</span>
+								</div>
+								<p class="oa-contact-email mui-h6">
+									{{value.name}}
+								</p>
+							</div>
+						</div>
+					</div>
+				</li>
+			{{/each}}
+		</script>
+	</body>
+	
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/template.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		// 单聊页面对象
+		var chatPage = null;
+		
+		mui.init({
+			swipeBack:false //启用右滑关闭功能
+		});
+		
+		mui.plusReady(function(){
+			var ws=plus.webview.currentWebview();
+			ws.addEventListener( "show", function(e){
+				var roster = plus.storage.getItem("roster");
+				var data = {
+					roster: JSON.parse(roster)
+				}
+				var html = template('roster-tpl', data);
+				document.getElementById('roster-cnt').innerHTML = html;
+			}, false );
+			// 预加载chatPage
+			chatPage = mui.preload({
+				url:'single-chat.html',
+			    id:'singleChat',
+			});
+		})
+		
+		mui("#roster-cnt").on('tap','li',function(){
+			var chatname = this.getAttribute('data-chatname');
+			mui.fire(chatPage,'chat',{
+				chatname: chatname
+			})
+			// 打开聊天页面
+			mui.openWindow({
+				id: 'singleChat',
+				show: {
+					aniShow: 'pop-in'
+				},
+				waiting: {
+					autoShow: false
+				}
+			});
+		})
+	</script>
+</html>

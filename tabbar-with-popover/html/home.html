@@ -12,14 +12,25 @@
 		<!--App自定义的css-->
 		<link rel="stylesheet" type="text/css" href="../css/app.css" />
 		<style type="text/css">
-			.mui-content>.mui-table-view:first-child {
+			.mui-content >.mui-table-view:first-child {
 				margin-top: 0px;
+			}
+			.mui-search{
+				display: inline-block;
+				width: 75%;
+			}
+			.mui-btn{
+				width: 20%;
 			}
 		</style>
 	</head>
 
 	<body>
 		<div class="mui-content">
+			<div class="mui-input-row mui-search">
+			    <input id="keyword" type="search" class="mui-input-clear" placeholder="">
+			</div>
+			<button id="searchBtn" type="button" class="mui-btn mui-btn-danger">search</button>
 			<ul id="list" class="mui-table-view mui-table-view-chevron"></ul>
 		</div>
 	</body>
@@ -30,53 +41,62 @@
 	<script>
 		mui.init();
 		
-		var url = "http://s.music.163.com/search/get/";       
-        mui.ajax(url,{
-			data: {
-                'type': 1,
-                's': "喜欢你",
-                'limit': 10
-            },
-			dataType:'json',//服务器返回json格式数据
-			type:'post',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				// console.log(JSON.stringify(data));
-				var songs=data.result.songs;
+		var list = mui("#list")[0];
+		var keyword = mui("#keyword")[0];
+		var searchBtn = mui("#searchBtn")[0];
 
-				var list = document.getElementById("list");
-				var fragment = document.createDocumentFragment();
-				var li;
-				mui.each(songs,function(index,item){
-				    // console.log(JSON.stringify(item.album.picUrl));
-				     var id = item.id,
-				        name = item.album.name,
-				        author = item.artists[0].name,
-				    	picUrl = item.album.picUrl,
-				    	audio = item.audio;	  
-				    	
-				    li = document.createElement('li');
-					li.className = 'mui-table-view-cell mui-media';
-					li.innerHTML = '<a class="mui-navigate-right" id='+ id +' data-audio='+ audio +'>'+
-					    				'<img class="mui-media-object mui-pull-left" data-lazyload="'+picUrl+'">'+
-					    				'<div class="mui-media-body">'+name+
-					    					'<p class="mui-ellipsis">'+author+'</p>'+
-					    				'</div>'+
-					    			'</a>';
-					fragment.appendChild(li);
-				})
-				
-				list.appendChild(fragment)
-				
-				mui(document).imageLazyload({
-					placeholder: '../img/lazyload.gif'
-				});
-			},
-			error:function(xhr,type,errorThrown){
-				//异常处理；
-				console.log(type);
-			}
-		});
+		mui("#searchBtn")[0].addEventListener('tap',function(){	
+			list.innerHTML='';
+			requestData();
+		})
+		
+		function requestData(){
+			var url = "http://s.music.163.com/search/get/";       
+	        mui.ajax(url,{
+				data: {
+	                'type': 1,
+	                's': keyword.value,
+	                'limit': 10
+	            },
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					// console.log(JSON.stringify(data));
+					var songs=data.result.songs;
+					var fragment = document.createDocumentFragment();
+					var li;
+					mui.each(songs,function(index,item){
+					    // console.log(JSON.stringify(item.album.picUrl));
+					     var id = item.id,
+					        name = item.album.name,
+					        author = item.artists[0].name,
+					    	picUrl = item.album.picUrl,
+					    	audio = item.audio;	  
+					    	
+					    li = document.createElement('li');
+						li.className = 'mui-table-view-cell mui-media';
+						li.innerHTML = '<a class="mui-navigate-right" id='+ id +' data-audio='+ audio +'>'+
+						    				'<img class="mui-media-object mui-pull-left" data-lazyload="'+picUrl+'">'+
+						    				'<div class="mui-media-body">'+name+
+						    					'<p class="mui-ellipsis">'+author+'</p>'+
+						    				'</div>'+
+						    			'</a>';
+						fragment.appendChild(li);
+					})
+					
+					list.appendChild(fragment)
+					
+					mui(document).imageLazyload({
+						placeholder: '../img/lazyload.gif'
+					});
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+		}
 		
 	    //列表点击事件
 		mui("#list").on('tap','li a',function(){

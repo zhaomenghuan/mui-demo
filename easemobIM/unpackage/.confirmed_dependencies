@@ -1,0 +1,100 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"sdk/strophe.js",
+			"sdk/easemob.im-1.1.shim.js",
+			"sdk/easemob.im-1.1.js",
+			"js/easemob.im.config.js",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"html/reg.html",
+			"html/tab-webview-main.html"
+		]
+	},
+	"html/reg.html": {
+		"resources": [
+			"sdk/strophe.js",
+			"fonts/mui.ttf",
+			"sdk/easemob.im-1.1.shim.js",
+			"sdk/easemob.im-1.1.js",
+			"js/easemob.im.config.js",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/tab-webview-main.html": {
+		"resources": [
+			"html/tab-webview-subpage-chat.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"sdk/strophe.js",
+			"sdk/easemob.im-1.1.shim.js",
+			"sdk/easemob.im-1.1.js",
+			"js/easemob.im.config.js"
+		],
+		"refer": [
+			"html/tab-webview-subpage-setting.html",
+			"html/tab-webview-subpage-chat.html",
+			"html/tab-webview-subpage-contact.html"
+		]
+	},
+	"html/tab-webview-subpage-setting.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"html/tab-webview-subpage-chat.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf",
+			"js/mui.js"
+		]
+	},
+	"html/tab-webview-subpage-contact.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"sdk/strophe.js",
+			"sdk/easemob.im-1.1.shim.js",
+			"sdk/easemob.im-1.1.js",
+			"js/easemob.im.config.js",
+			"js/template.js"
+		],
+		"refer": [
+			"html/single-chat.html"
+		]
+	},
+	"html/single-chat.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/chat-1.png",
+			"img/chat-2.png",
+			"img/test.jpg",
+			"sdk/strophe.js",
+			"sdk/easemob.im-1.1.shim.js",
+			"sdk/easemob.im-1.1.js",
+			"js/easemob.im.config.js",
+			"js/chatMsg.js",
+			"css/chat-msg.css",
+			"html/chat-msg.html"
+		],
+		"refer": [
+			"html/chat-msg.html"
+		]
+	},
+	"html/chat-msg.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	}
+}

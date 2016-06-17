@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.mui-input-group {
+				margin-top: 10px;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}	
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+			.spliter {
+				color: #bbb;
+				padding: 0px 8px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">登录</h1>
+		</header>
+		<div class="mui-content">
+			<form id='login-form' class="mui-input-group">
+				<div class="mui-input-row">
+					<label>手机</label>
+					<input id='username' type="number" class="mui-input-clear mui-input" placeholder="请输入手机号码">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+				</div>
+			</form>
+			<form class="mui-input-group">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell">
+						自动登录
+						<div id="autoLogin" class="mui-switch">
+							<div class="mui-switch-handle"></div>
+						</div>
+					</li>
+				</ul>
+			</form>
+			<div class="mui-content-padded">
+				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+				<div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+				</div>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<!--sdk-->
+		<script src="sdk/strophe.js"></script>
+		<script src="sdk/easemob.im-1.1.js"></script>
+		<script src="sdk/easemob.im-1.1.shim.js"></script><!--兼容老版本sdk需引入此文件-->
+		<!--config-->
+		<script src="js/easemob.im.config.js"></script>
+		<script>
+			mui.init();
+			
+			var mainPage = null;
+			mui.plusReady(function(){
+				mainPage = mui.preload({
+					"url": 'html/tab-webview-main.html',
+					"id": 'main'
+				});
+			})
+			
+			// 输入参数
+			var loginConfig = {
+				username: mui("#username")[0],
+				password: mui("#password")[0]
+			};		
+			
+			mui("#login")[0].addEventListener('tap',function(){
+				var username = loginConfig.username.value;
+				var password = loginConfig.password.value;
+				// 电话号码校验
+				if (!isMobile(username)){
+	                mui.toast("电话号码格式不正确");
+	                return;
+	            }
+				// 密码非空校验
+				if (!isEmpty(password)){
+					mui.toast('密码不能为空');
+					return;
+				}
+				
+				// 登录
+				var options = {
+		        	user : username,
+	                pwd : password,
+	                appKey : Easemob.im.config.appkey,
+				    success:function(data){
+				    	// console.log(JSON.stringify(data))
+				    	// mui.toast("成功登录");
+				        mui.fire(mainPage,'show',{
+			             	username:loginConfig.username.value,
+			             	password:loginConfig.password.value
+				      	});
+				        setTimeout(function() {
+							mui.openWindow({
+								id: 'main',
+								show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
+						}, 0);
+				    },
+				    error: function(e){
+				    	console.log(JSON.stringify(e))
+				    	mui.toast("成功失败:"+e.error_description);
+				    }
+				};
+				Easemob.im.Helper.login2UserGrid(options);
+			});
+			
+			// 注册页面
+			mui("#reg")[0].addEventListener('tap', function(event) {
+				mui.openWindow({
+					url: 'html/reg.html',
+					id: 'reg',
+					preload: true,
+					show: {
+						aniShow: 'pop-in'
+					},
+					styles: {
+						popGesture: 'hide'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+			
+			// 退出的逻辑
+			var backButtonPress = 0;
+			mui.back = function(event) {
+				backButtonPress++;
+				if (backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+				return false;
+			};
+			
+			// 是否为电话号码
+			function isMobile(value) {
+                var validateReg = /0?(13|14|15|18)[0-9]{9}/;
+				return validateReg.test(value);
+            }
+			
+			// 是否为空
+			function isEmpty(value){
+				var validateReg = /^\S+$/;
+				return validateReg.test(value);
+			}
+			
+//          autoLoginButton.classList[settings.autoLogin ? 'add' : 'remove']('mui-active')
+//					autoLoginButton.addEventListener('toggle', function(event) {
+//						setTimeout(function() {
+//							var isActive = event.detail.isActive;
+//							settings.autoLogin = isActive;
+//							app.setSettings(settings);
+//						}, 50);
+//					}, false);
+
+//					forgetButton.addEventListener('tap', function(event) {
+//						$.openWindow({
+//							url: 'forget_password.html',
+//							id: 'forget_password',
+//							preload: true,
+//							show: {
+//								aniShow: 'pop-in'
+//							},
+//							styles: {
+//								popGesture: 'hide'
+//							},
+//							waiting: {
+//								autoShow: false
+//							}
+//						});
+//					}, false);
+//					
+//					window.addEventListener('resize', function() {
+//						oauthArea.style.display = document.body.clientHeight > 400 ? 'block' : 'none';
+//					}, false);
+		</script>
+	</body>
+
+</html>

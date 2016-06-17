@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<style>
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>手机</label>
+					<input id='username' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号码">
+				</div>
+				<div class="mui-input-row">
+					<label>昵称</label>
+					<input id='nickname' type="text" class="mui-input-clear mui-input" placeholder="请输入昵称">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+				</div>
+				<div class="mui-input-row">
+					<label>确认</label>
+					<input id='password_confirm' type="password" class="mui-input-clear mui-input" placeholder="请确认密码">
+				</div>
+			</form>
+			<div class="mui-content-padded">
+				<button id='reg' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+			</div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<!--sdk-->
+		<script src="../sdk/strophe.js"></script>
+		<script src="../sdk/easemob.im-1.1.js"></script>
+		<script src="../sdk/easemob.im-1.1.shim.js"></script><!--兼容老版本sdk需引入此文件-->
+		<!--config-->
+		<script src="../js/easemob.im.config.js"></script>
+		<script>
+			mui.init();
+			
+			// 输入参数
+			var regConfig = {
+				username: mui("#username")[0],
+				nickname: mui("#nickname")[0],
+				password: mui("#password")[0],
+				passwordConfirm: mui("#password_confirm")[0]
+			};		
+			
+			// 注册事件监听
+			mui("#reg")[0].addEventListener('tap',function(){
+				var username = regConfig.username.value;
+				var nickname = regConfig.nickname.value;
+				var password = regConfig.password.value;
+				var passwordConfirm = regConfig.passwordConfirm.value;
+				
+				// 电话号码校验
+				if (!isMobile(username)){
+	                mui.toast("电话号码格式不正确");
+	                return;
+	            }
+				// 昵称非空校验
+				if (!isEmpty(nickname)){
+					mui.toast('昵称不能为空');
+					return;
+				}
+				// 密码非空校验
+				if (!isEmpty(password)){
+					mui.toast('密码不能为空');
+					return;
+				}
+				// 密码重复校验
+				if (passwordConfirm != password) {
+					mui.toast('密码两次输入不一致');
+					return;
+				}
+				
+				var options = {
+					username : username,
+					password : password,
+					nickname : nickname,
+					appKey : Easemob.im.config.appkey,
+					success : function(result) {
+						//注册成功;
+						console.log(JSON.stringify(result))
+						mui.toast('注册成功');
+					},
+					error : function(e) {
+						//注册失败;
+						console.log(JSON.stringify(e));
+						mui.toast('注册失败：'+e.error);
+						//如果用户存在就直接跳转
+		                if(e.error=="duplicate_unique_property_exists"){
+		                	// 跳转到聊天界面
+		                	window.location.href="../index.html"
+		                }
+					}
+				};
+				Easemob.im.Helper.registerUser(options);
+			});		
+
+			// 是否为电话号码
+			function isMobile(value) {
+                var validateReg = /0?(13|14|15|18)[0-9]{9}/;
+				return validateReg.test(value);
+            }
+			
+			// 是否为空
+			function isEmpty(value){
+				var validateReg = /^\S+$/;
+				return validateReg.test(value);
+			}
+		</script>
+	</body>
+
+</html>

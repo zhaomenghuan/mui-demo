@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">消息</h1>
+			<button id="addfriend" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">添加</button>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<a id="defaultTab" class="mui-tab-item mui-active" href="tab-webview-subpage-chat.html">
+				<span class="mui-icon mui-icon-email"></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item" href="tab-webview-subpage-contact.html">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">通讯录</span>
+			</a>
+			<a class="mui-tab-item" href="tab-webview-subpage-setting.html">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">设置</span>
+			</a>
+		</nav>
+		
+		<script src="../js/mui.min.js"></script>
+		<!--sdk-->
+		<script src="../sdk/strophe.js"></script>
+		<script src="../sdk/easemob.im-1.1.js"></script>
+		<script src="../sdk/easemob.im-1.1.shim.js"></script><!--兼容老版本sdk需引入此文件-->
+		<!--config-->
+		<script src="../js/easemob.im.config.js"></script>
+		<script type="text/javascript" charset="utf-8"> 
+			// 全局变量 
+			var subpages = ['tab-webview-subpage-chat.html', 'tab-webview-subpage-contact.html', 'tab-webview-subpage-setting.html'];
+			var subpage_style = {
+				top: '45px',
+				bottom: '51px'
+			};
+			var aniShow = {};
+
+			// 创建连接
+			var conn = new Easemob.im.Connection();
+			
+			// mui初始化
+			mui.init();
+			
+			// 创建子页面，首个选项卡页面显示，其它均隐藏；
+			mui.plusReady(function() {			
+				var self = plus.webview.currentWebview();
+				for (var i = 0; i < 3; i++) {
+					var temp = {};
+					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
+					if (i > 0) {
+						sub.hide();
+					}else{
+						temp[subpages[i]] = "true";
+						mui.extend(aniShow,temp);
+					}
+					self.append(sub);
+				}
+			});
+			
+			// 页面传参数事件监听
+			window.addEventListener('show',function(event){
+			    // 获得事件参数
+			    var username = event.detail.username;
+			    var password = event.detail.password;
+			    // 本地存储账号密码
+			    plus.storage.setItem("username",username);
+			    plus.storage.setItem("password",password);
+			    
+			   	// 初始化连接
+				conn.init({
+					onOpened : function(){
+						// mui.toast("成功登录");
+						conn.setPresence();
+						conn.getRoster({
+					       	success : function(roster) {
+					      		// console.log(JSON.stringify(roster));
+					      		plus.storage.setItem("roster",JSON.stringify(roster));
+							}
+						});
+					},
+					// 收到联系人订阅请求的回调方法
+					onPresence : function(message) {
+						handlePresence(message);
+					},
+					// 当连接关闭时的回调方法
+					onClosed : function() {
+						conn.clear();
+						conn.onClosed();
+					}
+				});
+			   
+			   	// 打开连接
+				conn.open({
+				   	user : username,
+				   	pwd : password,
+				   	appKey : Easemob.im.config.appkey
+				}); 	
+			});
+			
+			var handlePresence = function(e) {
+				var user = e.from;
+				//（发送者希望订阅接收者的出席信息）
+				if (e.type == 'subscribe') {
+					mui.confirm('有人要添加你为好友', '添加好友', ['确定','取消'], function(e){
+						if (e.index == 0) {
+							//同意添加好友操作的实现方法
+							conn.subscribed({
+								to : user,
+							    message : "[resp:true]"
+							});
+							mui.toast('你同意添加好友请求');
+						} else {
+							//拒绝添加好友的方法处理
+							conn.unsubscribed({
+								to : user,
+								message : "rejectAddFriend"
+							});
+							mui.toast('你拒绝了添加好友');
+						}
+					})
+				}
+			};
+			
+			// 添加好友
+			mui("#addfriend")[0].addEventListener('tap',function(e){
+				e.detail.gesture.preventDefault();
+				var btnArray = ['确定','取消'];
+				mui.prompt('请输入你要添加的好友的用户名：', '手机号', '邀请好友', btnArray, function(e) {
+					if (e.index == 0) {
+						var user = e.value;
+						conn.subscribe({
+							to : user,
+							message : "加个好友呗"
+						});
+						mui.toast('邀请发送成功！');
+					} else {
+						mui.toast('你取消了发送！');
+					}
+				});
+			})
+			
+			//当前激活选项
+			var activeTab = subpages[0];
+			var title = document.getElementById("title");
+			 //选项卡点击事件
+			mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				var targetTab = this.getAttribute('href');
+				if (targetTab == activeTab) {
+					return;
+				}
+				//更换标题
+				title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+				//显示目标选项卡
+				//若为iOS平台或非首次显示，则直接显示
+				if(mui.os.ios||aniShow[targetTab]){
+					plus.webview.show(targetTab);
+				}else{
+					//否则，使用fade-in动画，且保存变量
+					var temp = {};
+					temp[targetTab] = "true";
+					mui.extend(aniShow,temp);
+					plus.webview.show(targetTab,"fade-in",300);
+				}
+				//隐藏当前;
+				plus.webview.hide(activeTab);
+				//更改当前活跃的选项卡
+				activeTab = targetTab;
+			});
+			
+			// 自定义事件，模拟点击"首页选项卡"
+			document.addEventListener('gohome', function() {
+				var defaultTab = document.getElementById("defaultTab");
+				//模拟首页点击
+				mui.trigger(defaultTab, 'tap');
+				//切换选项卡高亮
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if (defaultTab !== current) {
+					current.classList.remove('mui-active');
+					defaultTab.classList.add('mui-active');
+				}
+			});	
+			
+			// 退出的逻辑
+			var backButtonPress = 0;
+			mui.back = function(event) {
+				backButtonPress++;
+				if (backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					// 清除好友记录
+					plus.storage.removeItem("roster");
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
+				return false;
+			};
+		</script>
+	</body>
+</html>
