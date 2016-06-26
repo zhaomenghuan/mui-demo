@@ -1,0 +1,24 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+</head>
+<body>
+	<form>
+		规则表达式 ： (填写/ /之间的表达式)<br />
+		<input type="input" name="regxStr" value="" ><br />
+		校验字符串 ：<br />
+		<input type="input" name="str" value="" >
+		<input type="button" name="match" value="匹配" onClick="alert(regx(regxStr.value,str.value));">
+	</form>
+	<script type="text/javascript">
+		function regx(r,s){
+		    if (r == null || r == ""){
+		       return;
+		    }
+		    var patrn= new RegExp(r);
+		    return patrn.test(s)
+		}
+	</script>
+</body>
+</html>

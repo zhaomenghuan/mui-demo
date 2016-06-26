@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content">
+			
+		</div>
+		
+		<script type="text/html" id="template">
+			<p>name: {%this.name%}</p>
+			<p>age: {%this.age%}</p>
+			{%if (this.sex) { %}
+				<p>sex: {%this.sex%}</p>
+			{%}%}
+			<ul>
+			{%for (var i=0;i<this.skills.length;i++) { %}
+				<li>skills{%i%}: {%this.skills[i]%}</li>
+			{%}%}
+			</ul>
+			<ul>
+			{%for (var i in this.skills) { %}
+				<li>skills{%i%}: {%this.skills[i]%}</li>
+			{%}%}
+			</ul>
+		</script>
+		
+		<script type="text/javascript">
+			var mtpl = function(tpl, data) {
+				var sTag = '{%';//开始标签
+        		var eTag = '%}';//结束标签
+				var code = 'var r=[];\n';
+				var reg = /(^( )?(var|if|for|else|switch|case|break|{|}|;))(.*)?/g;
+        		
+        		function parsehtml(line) {
+		            // 单双引号转义，换行符替换为空格,去掉前后的空格
+		            line = line.replace(/('|")/g, '\\$1').replace(/\n/g, ' ').replace(/(^\s+)|(\s+$)/g,"");
+		            code +='r.push("' + line + '");\n';
+		        }
+        		
+        		function parsejs(line) {   
+        			// 去掉前后的空格
+        			line = line.replace(/(^\s+)|(\s+$)/g,"");
+		            code += line.match(reg)? line + '\n' : 'r.push(' + line + ');\n';
+		        }
+				
+				var matchs = tpl.split(sTag);
+		        for (var i = 0, len = matchs.length; i < len; i++) {
+		            var match = matchs[i].split(eTag);
+		            if (match.length === 1) {
+		                parsehtml(match[0]);
+		            } else {
+		            	if(match[0]){
+		            		parsejs(match[0]);
+		            	}   
+		                if (match[1]) {
+		                    parsehtml(match[1]);
+		                }
+		            }
+		        }
+		        code += 'return r.join("");';
+		        console.log(code);
+			   	return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+			}
+			
+			var tpl = document.getElementById("template").innerHTML;
+			document.getElementById("content").innerHTML = mtpl(tpl,{
+			    name: "zhaomenghuan",
+			    age: 22,
+			    sex: 'man',
+			    skills: ['html5','javascript']
+			});
+		</script>
+	</body>
+</html>

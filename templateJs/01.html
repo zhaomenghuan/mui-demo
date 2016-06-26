@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>	
+		<div class="content">
+			
+		</div>	
+		<template id="template">
+			<p>name: 小青年</p>
+			<p>age: 22</p>
+		</template>	
+		<script type="text/javascript">	
+			var isSupport='content' in document.createElement('template');
+			if (isSupport) {	
+  				var tpl = document.querySelector('#template');
+			    var content = document.querySelector(".content");
+			    var clone = document.importNode(tpl.content, true);
+			    content.appendChild(clone); 
+			} else {
+				alert("is not support template");
+			}
+		</script>
+	</body>
+</html>

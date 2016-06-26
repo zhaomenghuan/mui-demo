@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content"></div>
+		
+		<script type="text/tpl" id="template">
+			<p>name: {{this.name}}</p>
+			<p>age: {{this.profile.age}}</p>
+			{{if (this.sex) {}}
+				<p>sex: {{this.sex}}</p>
+			{{}}}
+			<ul>
+				{{for(var i in this.skills){}}
+				<li>{{this.skills[i]}}</li>
+				{{}}}
+			</ul>
+		</script>
+		
+		<script type="text/javascript">	
+			var mtpl = function(tpl, data) {
+			    var re = /{{(.+?)}}/g, 
+					reExp = /(^( )?(var|if|for|else|switch|case|break|{|}|;))(.*)?/g,	
+			        code = 'var r=[];\n',
+			        cursor = 0;
+			        
+			    var add = function(line,js) {
+			        js? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
+						(code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
+					return add;
+			    }			    
+			    while((match = re.exec(tpl))!== null) {
+			        add(tpl.slice(cursor, match.index))(match[1],true);
+			        cursor = match.index + match[0].length;
+			    }
+			    add(tpl.substr(cursor, tpl.length - cursor));
+			    code += 'return r.join("");';
+			    return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+			}
+			
+			var tpl = document.getElementById("template").innerHTML.toString();
+			document.getElementById("content").innerHTML = mtpl(tpl,{
+			    name: "zhaomenghuan",
+			    profile: { 
+			    	age: 22 
+			    },
+			    sex: 'man',
+			    skills: ['html5','javascript','android']
+			});
+		</script>
+	</body>
+</html>

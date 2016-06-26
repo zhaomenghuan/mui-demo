@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content"></div>
+		
+		<script type="text/tpl" id="template">
+			<p>name: {{this.name}}</p>
+			<p>age: {{this.age}}</p>
+		</script>
+		
+		<script type="text/javascript">	
+			var mtpl = function(tpl,data) {
+			    var re = /{{(.+?)}}/g,cursor = 0;
+			        			    
+			    while((match = re.exec(tpl))!== null) {
+			    	// 开始标签  {{ 前的内容和结束标签 }} 后的内容
+			    	console.log(tpl.slice(cursor, match.index))
+			    	// 开始标签  {{ 和 结束标签 }} 之间的内容
+			    	console.log(match[1])
+			    	// 每一次匹配完成移动指针
+			        cursor = match.index + match[0].length;
+			    }
+			    // 最后一次匹配完的内容
+			    console.log(tpl.substr(cursor, tpl.length - cursor))
+			}
+			
+			var tpl = document.getElementById("template").innerHTML;
+			mtpl(tpl,null);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">	
+			// 方式1
+			var fn = new Function("arg", "console.log(arg + 1);");
+			fn(2); // outputs 3
+			
+			// 方式2
+			var fn = function(arg) {
+				console.log(arg + 1);
+			}
+			fn(2);
+			
+			// 方式3
+			var data = {
+				name: 'zhaomenghuan',
+				age: 22
+			}	
+			new Function("console.log(this.name + ' is ' + this.age +' years old.');").apply(data);
+			
+			// 方式4
+			var data = {
+				name: 'zhaomenghuan',
+				age: 22
+			}			
+			var code = 'var r=[];\n';
+			code += 'r.push("<p>");\n';
+			code += 'r.push(this.name);\n'
+			code += 'r.push("</p><p>");\n';
+			code += 'r.push(this.age);\n';
+			code += 'r.push("</p>");\n';
+			code += 'return r.join("");';
+			console.log(code)
+			var fn = new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+			console.log(fn)
+		</script>
+	</body>
+</html>

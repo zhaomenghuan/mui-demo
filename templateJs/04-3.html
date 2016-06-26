@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content"></div>
+		
+		<script type="text/tpl" id="template">
+			<p>name: {{this.name}}</p>
+			<p>age: {{this.profile.age}}</p>
+			{{if (this.sex) {}}
+				<p>sex: {{this.sex}}</p>
+			{{}}}
+			<ul>
+				{{for(var i in this.skills){}}
+				<li>{{this.skills[i]}}</li>
+				{{}}}
+			</ul>
+		</script>
+		
+		<script type="text/javascript">	
+			var mtpl = function(tpl, data) {
+			    var re = /{{(.+?)}}/g, 
+			    	cursor = 0
+					reExp = /(^( )?(var|if|for|else|switch|case|break|{|}|;))(.*)?/g,	
+			        code = 'var r=[];\n';
+
+				// 解析html
+				function parsehtml(line) {
+					// 单双引号转义，换行符替换为空格,去掉前后的空格
+					line = line.replace(/('|")/g, '\\$1').replace(/\n/g, ' ').replace(/(^\s+)|(\s+$)/g,"");
+					code +='r.push("' + line + '");\n';
+				}
+				
+				// 解析js代码		
+				function parsejs(line) {   
+					// 去掉前后的空格
+					line = line.replace(/(^\s+)|(\s+$)/g,"");
+				    code += line.match(reExp)? line + '\n' : 'r.push(' + line + ');\n';
+				}	
+			    
+			    while((match = re.exec(tpl))!== null) {
+			    	// 开始标签  {{ 前的内容和结束标签 }} 后的内容
+			    	parsehtml(tpl.slice(cursor, match.index))
+			    	// 开始标签  {{ 和 结束标签 }} 之间的内容
+			    	parsejs(match[1])
+			    	// 每一次匹配完成移动指针
+			        cursor = match.index + match[0].length;
+			    }
+			    // 最后一次匹配完的内容
+			    parsehtml(tpl.substr(cursor, tpl.length - cursor));
+			    code += 'return r.join("");';
+			    return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
+			}
+			
+			var tpl = document.getElementById("template").innerHTML.toString();
+			document.getElementById("content").innerHTML = mtpl(tpl,{
+			    name: "zhaomenghuan",
+			    profile: { 
+			    	age: 22 
+			    },
+			    sex: 'man',
+			    skills: ['html5','javascript','android']
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content">
+			
+		</div>
+		
+		<script type="text/html" id="template">
+			<p>name: {%this.name%}</p>
+			<p>age: {%this.age%}</p>
+		</script>
+		
+		<script type="text/javascript">
+			var mtpl = function(tpl, data) {
+				var sTag = '{%';//开始标签
+				var eTag = '%}';//结束标签
+				
+				var matchs = tpl.split(sTag);
+		        for (var i = 0, len = matchs.length; i < len; i++) {
+		            var match = matchs[i].split(eTag);
+		            if(match.length===1){
+		            	console.log(match[0]);
+		            }else{
+		            	if(match[0]){
+		            		console.log(match[0]);
+		            	}   
+		                if (match[1]) {
+		                    console.log(match[1]);
+		                }
+		            }
+		            
+		        }
+			}
+			
+			var tpl = document.getElementById("template").innerHTML;
+			mtpl(tpl,null);
+		</script>
+	</body>
+</html>

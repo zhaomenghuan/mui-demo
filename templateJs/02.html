@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="content"></div>
+		
+		<!--HTML模板(类似MVC中的view)-->
+		<script type="text/html" id="template">
+			<p>name: {{name}}</p>
+			<p>age: {{age}}</p>
+		</script>
+		
+		<script type="text/javascript">
+			// 模板引擎函数(类似MVC中的controller)
+			var mtpl = function(tpl, data) {
+			    var re = /{{(.+?)}}/g;
+			    while((match = re.exec(tpl))!==null) {
+				    console.log(match);
+				    if(match[1]){
+				    	tpl = tpl.replace(match[0], data[match[1]])
+				    }else{
+				    	tpl = tpl.replace(match[0], '')
+				    }	
+				}
+			    return tpl
+			}
+			// 模板数据(类似MVC中的model)
+			var tpl = document.getElementById("template").innerHTML;
+			document.getElementById("content").innerHTML = mtpl(tpl,{
+			    name: "zhaomenghuan",
+			    age: 22
+			});
+		</script>
+	</body>
+</html>
