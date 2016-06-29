@@ -37,6 +37,7 @@
 			};
 			
 			// 底部导航栏
+			var tw = null;
 			var tabbar = "html/tabbar.html";
 			var tabbar_style = {
 				height:"60px",
@@ -55,7 +56,7 @@
 				self.append(subIndex);
 				plus.webview.show(subIndex);
 				// 创建底部栏
-				var tw = plus.webview.create(tabbar,tabbar,tabbar_style);
+				tw = plus.webview.create(tabbar,tabbar,tabbar_style);
 				self.append(tw);
 			})
 			
@@ -84,10 +85,14 @@
 					var sub = plus.webview.create(targetTab, targetTab, subpage_style);
 					sub.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});
 					plus.webview.currentWebview().append(sub);
-					plus.webview.show(sub,"fade-in",300);
+					plus.webview.show(sub,'pop-in',300);
+					// 重新加载tabbar
+					tw.show();
 				}else{
 					//显示目标选项卡
 					plus.webview.show(targetTab);
+					// 重新加载tabbar
+					tw.show();
 				}			
 				//隐藏当前;
 				plus.webview.hide(activeTab);
