@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <script type="text/javascript">
+			// 场景1
+			var data = {
+			    name: 'zhaomenghuan',
+			    age: 22
+			}
+			console.log(typeof data); // "object"
+			console.log(JSON.stringify(data)) // "{"name":"zhaomenghuan","age":22}"
+			
+			// 场景2
+			var str = '{"name":"zhaomenghuan","age":22}';
+			console.log(typeof str)  // "string"
+			console.log(JSON.parse(str).name) // "zhaomenghuan"      
+        </script>
+    </body>
+</html>

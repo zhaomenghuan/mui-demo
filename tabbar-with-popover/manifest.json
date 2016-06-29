@@ -101,7 +101,7 @@
         },
         "NativeObj":{
         	"description": "原生对象"
-        }
+        },"OAuth":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -110,7 +110,7 @@
 		},
 		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
-		"distribute": {
+		"distribute": {"plugins":{"oauth":{"qq":{"appid":"1105504754"}}},
 			"apple": {
 				"appid": "",/*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
 				"mobileprovision": "",/*iOS应用打包配置文件*/
@@ -205,12 +205,15 @@
 					"img/i-person.png",
 					"img/i-pop.png",
 					"html/tabbar.html",
-					"css/app.css"
+					"css/app.css",
+					"js/mui.js",
+					"css/mui.css"
 				],
 				"refer": [
 					"html/setting.html",
 					"html/message.html",
-					"html/find.html"
+					"html/find.html",
+					"main.html"
 				],
 				"priority": 0
 			},
@@ -330,13 +333,26 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"main.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/app.css",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"html/tabbar.html",
+					"html/home.html",
+					"html/setting.html"
+				],
+				"refer": [
+					"html/find.html",
+					"html/message.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {
-			"resources": [
-				"js/mui.js",
-				"css/mui.css"
-			]
+			"resources": []
 		}
 	}
 }

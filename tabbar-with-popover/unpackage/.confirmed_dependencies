@@ -12,7 +12,9 @@
 			"img/i-person.png",
 			"img/i-pop.png",
 			"html/tabbar.html",
-			"css/app.css"
+			"css/app.css",
+			"js/mui.js",
+			"css/mui.css"
 		],
 		"refer": [
 			"html/setting.html",
@@ -20,7 +22,8 @@
 			"html/home.html",
 			"html/popover.html",
 			"html/find.html",
-			"html/tabbar.html"
+			"html/tabbar.html",
+			"main.html"
 		]
 	},
 	"html/popover.html": {
@@ -42,7 +45,8 @@
 			"img/i-more.png",
 			"img/i-message.png",
 			"img/i-share.png"
-		]
+		],
+		"refer": []
 	},
 	"html/home.html": {
 		"resources": [
@@ -63,7 +67,8 @@
 		"resources": [
 			"js/mui.min.js",
 			"css/mui.min.css"
-		]
+		],
+		"refer": []
 	},
 	"html/message.html": {
 		"resources": [
@@ -71,7 +76,8 @@
 			"css/mui.min.css",
 			"js/vue.js",
 			"img/lazyload.gif"
-		]
+		],
+		"refer": []
 	},
 	"html/tabbar.html": {
 		"resources": [
@@ -100,7 +106,8 @@
 		"resources": [
 			"js/mui.min.js",
 			"css/mui.min.css"
-		]
+		],
+		"refer": []
 	},
 	"html/menu.html": {
 		"resources": [
@@ -117,12 +124,32 @@
 			"img/i-more.png",
 			"img/i-contactus.png",
 			"img/i-contact.png"
-		]
+		],
+		"refer": []
 	},
 	"html/find.html": {
 		"resources": [
 			"js/mui.min.js",
 			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"main.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/app.css",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"html/tabbar.html",
+			"html/home.html",
+			"html/setting.html"
+		],
+		"refer": [
+			"html/home.html",
+			"html/tabbar.html",
+			"html/find.html",
+			"html/setting.html",
+			"html/message.html"
 		]
 	}
 }

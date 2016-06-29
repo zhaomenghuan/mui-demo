@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var xhr = new XMLHttpRequest();
+			xhr.open("get", "http://zhaomenghuan.github.io/api/blog.json", true);
+			xhr.onload = function () {
+				var data = JSON.parse(this.responseText);
+			    for(var i in data){
+			    	document.write(data[i].pageId + '：' + data[i].title+"<br />")
+			    }
+			};
+			xhr.onerror = function () {
+		        alert('error making the request.');
+		   	};	
+			xhr.send();		
+		</script>
+	</body>
+</html>

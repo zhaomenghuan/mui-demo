@@ -10,15 +10,17 @@ header.mui-bar a.mui-icon{
  * 顶部选项卡
  */
 .mui-segmented-control{
-	padding: 0px;
-	width: 150px !important;
+	position: absolute;
+	left: 45px;
+	right: 45px;
+	width: 120px !important;
 	height: 30px;
 	border: 1px solid #fff;
 }
 .mui-segmented-control .mui-control-item{
 	color: #fff !important;
 	line-height: 30px;
-	width: 75px;
+	width: 60px;
 	border-left: 1px solid #eb4f38;
 }
 .mui-segmented-control .mui-control-item.mui-active{
