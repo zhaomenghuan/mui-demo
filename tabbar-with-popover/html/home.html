@@ -13,12 +13,19 @@
 		<link rel="stylesheet" type="text/css" href="../css/app.css" />
 		<style type="text/css">
 			.mui-search{
-				display: block;
-				width: 95%;
-				margin: 5px auto -8px;
+				display: inline-block;
+				width: 75%;
+				margin: 5px 5px -12px;
 			}
 			.mui-content>.mui-table-view:first-child{
 				margin-top: 0px;
+			}
+			#keyword{
+				width:100%;
+			}
+			#send{
+				width: 20%;
+				margin: 5px 0px;
 			}
 		</style>
 	</head>
@@ -28,6 +35,7 @@
 			<div class="mui-input-row mui-search">
 			    <input id="keyword" type="search" class="mui-input-clear" placeholder="搜索">
 			</div>
+			<button id="send" type="button" class="mui-btn mui-btn-red">搜索</button>
 			<ul id="list" class="mui-table-view mui-table-view-chevron"></ul>
 		</div>
 	</body>
@@ -40,6 +48,14 @@
 		
 		var list = mui("#list")[0];
 		var keyword = mui("#keyword")[0];
+
+		keyword.addEventListener('blur',function(){
+			requestData();
+		});
+		
+		mui("#keyword")[0].addEventListener('tap',function(){
+			requestData();
+		})
 
 		function requestData(){
 			var url = "http://s.music.163.com/search/get/";       
@@ -54,6 +70,9 @@
 				timeout:10000,//超时时间设置为10秒；
 				success:function(data){
 					// console.log(JSON.stringify(data));
+					
+					list.innerHTML = '';
+					
 					var songs=data.result.songs;
 					var fragment = document.createDocumentFragment();
 					var li;
