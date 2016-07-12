@@ -1,0 +1,57 @@
+{
+	"index.html": {
+		"resources": [
+			"js/vue.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"home.html",
+			"js/vue-mui.js"
+		],
+		"refer": [
+			"home.html",
+			"phone.html",
+			"email.html",
+			"gear.html"
+		]
+	},
+	"email.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"home.html": {
+		"resources": [
+			"img/lazyload.gif",
+			"js/vue.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"1.html",
+			"mui.js",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"1.html",
+			"home-sub.html"
+		]
+	},
+	"phone.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"1.html": {
+		"resources": [
+			"js/mui.js"
+		]
+	},
+	"home-sub.html": {
+		"resources": [
+			"js/mui.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		]
+	}
+}

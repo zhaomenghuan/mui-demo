@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body id="home">	
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view">
+			        <li class="mui-table-view-cell mui-media" v-for="item in items" v-on:tap="list($index)">
+			            <a data-href="{{item.href}}">
+			                <img class="mui-media-object mui-pull-left" v-bind:src="item.src">
+			                <div class="mui-media-body">
+			                	{{item.title}}
+			                    <p class="mui-ellipsis">{{item.descrition}}</p>
+			                </div>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+	
+		<script src="js/mui.min.js"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var home = new Vue({
+				el: '#home',
+				data: {
+					items: []
+				},
+				ready: function(){
+					mui.init({
+						pullRefresh: {
+							container: '#pullrefresh',
+							down: {
+								callback: this.pulldownRefresh
+							},
+							up: {
+								contentrefresh: '正在加载...',
+								callback: this.pullupRefresh
+							}
+						}
+					});
+					if (mui.os.plus) {
+						mui.plusReady(function() {
+							setTimeout(function() {
+								mui('#pullrefresh').pullRefresh().pullupLoading();
+							}, 1000);
+						});
+					} else {
+						mui.ready(function() {
+							mui('#pullrefresh').pullRefresh().pullupLoading();
+						});
+					}
+				},
+				methods: {
+					// 下拉刷新具体业务实现
+					pulldownRefresh: function() {
+						var self = this;
+						setTimeout(function() {
+							for(var i=0; i < 5; i++) {
+								self.items.unshift({
+									href: i+'.html', 
+									src: 'img/lazyload.gif', 
+									title: 'dowm'+i, 
+									descrition: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？'
+								})
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						}, 1500);
+					},
+					// 上拉加载具体业务实现
+					pullupRefresh: function() {
+						var self = this;
+						setTimeout(function() {
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(); //refresh completed
+							for(var i=0; i < 15; i++) {
+								self.items.push({
+									href: i+'.html', 
+									src: 'img/lazyload.gif', 
+									title: 'up'+i, 
+									descrition: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？'
+								})
+							}
+						}, 1500);
+					},
+					list: function(index) {
+						var subUrl = this.items[index].href;
+						mui.openWindow({
+							url: 'home-sub.html',
+							id: 'homesub',
+							extras: {
+								subUrl: subUrl
+							}
+						});
+						if(!mui.os.plus){
+							localStorage.setItem('subUrl', subUrl);
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>
