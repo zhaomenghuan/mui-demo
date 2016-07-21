@@ -1,0 +1,14 @@
+{
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/immersed.js",
+      "about.html"
+    ],
+    "refer": [
+      "about.html"
+    ]
+  }
+}

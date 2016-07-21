@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css"/>
+		<style type="text/css">
+			.mui-input-group{
+				margin: 20px 0px;
+			}
+			.mui-input-group .mui-input-row {
+			    height: 60px;
+			    padding: 10px;
+			}
+			.mui-input-group .mui-input-row label{
+				width: 30%;
+				font-size: 20px;
+				color: #ff9600;
+			}
+			.mui-input-group .mui-input-row label:after{
+				position: absolute;
+				top:0px;
+				bottom: 0px;
+    			left: 30%;
+				width: 1px;
+				height: 60px;
+			    content: '';
+			    -webkit-transform: scaleY(.5);
+			    transform: scaleY(.5);
+			    background-color: hsl(252, 5%, 79%);
+			}
+			.mui-input-group .mui-input-row input{
+				width: 70%;
+				padding-left: 10px;
+			}
+			.app-btn-send button{
+				width: 90%;
+				margin: 0px auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+					<input type="button" id="chooseSex">
+				</div>
+				<div class="mui-input-row">
+					<label>出生年月</label>
+					<input type="button" id="chooseTime">
+				</div>
+			</form>
+			<div class="app-btn-send">
+				<button type="button" class="mui-btn mui-btn-warning mui-btn-block">提交</button>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.picker.min.js"></script>
+		<script type="text/javascript">
+			document.getElementById("chooseSex").addEventListener('tap', function() {
+				var picker = new mui.PopPicker();
+				picker.setData([{
+					value: 'man',
+					text: '男'
+				},{
+					value: 'woman',
+					text: '女'
+				}]);
+				picker.show(function(items) {
+					mui.alert(JSON.stringify(items[0]));	
+				});
+			}, false);
+			
+			document.getElementById("chooseTime").addEventListener('tap', function() {
+				var dtpicker = new mui.DtPicker({
+				    "type":"date",
+				    "value":"2015-10-10"
+				})
+				dtpicker.show(function(rs) {
+				    //mui.alert(rs.text);
+				    document.getElementById("chooseTime").value = rs.text;
+				})
+			}, false);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title> 
+    <link href="../css/mui.min.css" rel="stylesheet"/> 
+    <link rel="stylesheet" type="text/css" href="../css/chat-msg.css"/>
+    <style type="text/css">
+    	/*如要发送完最后一条消息就滚上去，就要设置内滚动模式*/
+    	html,
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+		}
+		.mui-content{
+			height: 100%;
+			padding: 44px 0px 50px 0px;
+			overflow: auto;
+			background-color: #eaeaea;
+		}
+		#msg-list {
+			height: 100%;
+			overflow: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		
+			
+		footer {
+			position: fixed;
+			width: 100%;
+			height: 50px;
+			min-height: 50px;
+			border-top: solid 1px #bbb;
+			left: 0px;
+			bottom: 0px;
+			overflow: hidden;
+			padding: 0px 50px;
+			background-color: #fafafa;
+		}
+		.footer-left {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			left: 0px;
+			bottom: 0px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100%;
+			padding: 12px 4px;
+		}
+		.footer-right {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			right: 0px;
+			bottom: 0px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100%;
+			padding: 12px 5px;
+			display: inline-block;
+		}
+		.footer-center {
+			height: 100%;
+			padding: 5px 0px;
+		}
+		.footer-center [class*=input] {
+			width: 100%;
+			height: 100%;
+			border-radius: 5px;
+		}
+		.footer-center .input-text {
+			background: #fff;
+			border: solid 1px #ddd;
+			padding: 10px !important;
+			font-size: 16px !important;
+			line-height: 18px !important;
+			font-family: verdana !important;
+			overflow: hidden;
+		}
+		.footer-center .input-sound {
+			background-color: #eee;
+		}
+		
+		footer .mui-icon {
+				color: #000;
+		}
+		footer .mui-icon:active {
+			color: #007AFF !important;
+		}
+		.footer-right span{
+			color: #0062CC;
+			line-height: 30px;
+		}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title"></h1>
+	</header>
+	<div class="mui-content">
+		<div id="msg-list"></div>
+	</div>
+	<footer>
+		<div class="footer-left">
+			<i id='msg-choose-img' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+		</div>
+		<div class="footer-center">
+			<textarea id='msg-text' type="text" class='input-text'></textarea>
+		</div>
+		<div class="footer-right">
+			<span id='msg-send-text'>发送</span>
+		</div>
+	</footer>
+	
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/chatMsg.js" type="text/javascript" charset="utf-8"></script>
+	<!--sdk-->
+	<script src="../sdk/strophe.js"></script>
+	<script src="../sdk/easemob.im-1.1.js"></script>
+	<script src="../sdk/easemob.im-1.1.shim.js"></script><!--兼容老版本sdk需引入此文件-->
+	<!--config-->
+	<script src="../js/easemob.im.config.js"></script>
+	<script type="text/javascript" charset="UTF-8">
+      	// UI控件对象
+		var ui = {
+			content: mui('.mui-content'[0]),
+			msgList: mui('#msg-list')[0],
+			footer: mui('footer')[0],
+			msgChooseImg: mui("#msg-choose-img")[0],
+			msgText: mui('#msg-text')[0],
+			msgSendText: mui('#msg-send-text')[0]
+		}
+      	// 消息初始化
+		var msgInit = {
+			el: '#msg-list', //消息容器
+			senderAvatar: '../img/chat-1.png',  //发送者头像
+			receiverAvatar: '../img/chat-2.png', //接收者头像
+		}
+      	
+		mui.init({
+			gestureConfig: {
+				tap: true, //默认为true
+				doubletap: true, //默认为false
+				longtap: true, //默认为false
+				swipe: true, //默认为true
+				drag: true, //默认为true
+				hold: true, //默认为false，不监听
+				release: true //默认为false，不监听
+			}
+		});
+		
+		// 创建连接
+		var conn = new Easemob.im.Connection();
+     	
+      	// 页面传参数事件监听
+      	var chatName = null;
+		window.addEventListener('chat',function(event){
+			// 获得事件参数
+			chatName = event.detail.chatname;
+			document.querySelector(".mui-title").innerHTML = "与" + chatName + "正在聊天";
+			
+			// 初始化连接
+			conn.init({
+				onOpened : function(){
+					//mui.toast("成功登录");
+					conn.setPresence();
+				},
+				// 收到文本消息时的回调函数
+			    onTextMessage : function(message) {
+					// console.log(JSON.stringify(message));
+					var from = message.from;//消息的发送者
+					var msg = message.data;//文本消息体	
+					//mui.toast(msg);
+					// 收到文本消息在页面展示
+					msgShow('receiver','text',msg);
+					msgScrollTop();
+				},
+				// 收到图片消息时的回调函数
+				onPictureMessage : function(message) {
+			     	handlePictureMessage(message);
+			   	}
+			});
+			
+			// 打开连接
+			conn.open({
+			   	user : plus.storage.getItem("username"),
+			   	pwd : plus.storage.getItem("password"),
+			   	appKey : Easemob.im.config.appkey
+			});
+    	});
+    	
+		// 发送文本消息
+    	ui.msgSendText.addEventListener('tap',function(){
+    		sendText();
+    	})
+    	
+    	// 发送图片
+    	ui.msgChooseImg.addEventListener('tap',function(){
+    		sendImg();
+    	})
+    	
+		// 解决长按“发送”按钮，导致键盘关闭的问题；
+		ui.msgSendText.addEventListener('touchstart', function(event) {
+			msgTextFocus();
+			event.preventDefault();
+		});
+		ui.msgSendText.addEventListener('touchmove', function(event) {
+			msgTextFocus();
+			event.preventDefault();
+		});
+		
+		// 输入框监听事件
+    	ui.msgText.addEventListener('input', function(event) {
+    		msgTextFocus();
+			ui.footer.style.height = this.scrollHeight + 'px';
+		});
+		
+		/*消息滚动*/
+    	window.addEventListener('resize', function() {
+			msgScrollTop();
+		}, false);
+		
+    	// 发送文本
+    	var sendText = function(){
+    		var msg = ui.msgText.value.replace(new RegExp('\n', 'gm'), '<br/>');
+    		var validateReg = /^\S+$/;
+    		// 获得输入框键盘焦点
+    		msgTextFocus();
+    		// 消息判断
+    		if(validateReg.test(msg)){
+    			msgShow('sender','text',msg);
+    			// 发送文本消息到环信服务器
+				conn.sendTextMessage({
+				    to: chatName, //用户登录名，SDK根据AppKey和domain组织jid，如easemob-demo#chatdemoui_**TEST**@easemob.com，中"to:TEST",下同
+				    msg: msg, //文本消息
+				    type: "chat"
+				    //ext :{"extmsg":"extends messages"}//用户自扩展的消息内容（群聊用法相同）
+				});		
+				// 清空文本框
+				ui.msgText.value = '';
+				// 恢复输入框高度(因为我们这里是50px)
+				ui.footer.style.height = '50px';
+				// 保持输入状态
+				mui.trigger(ui.msgText, 'input', null);
+				// 这一句让内容滚动起来
+				msgScrollTop();
+    		}else{
+    			mui.toast("文本消息不能为空");
+    		}
+    	}
+
+    	// 发送照片
+    	var sendImg = function () {
+    		var btnArray = [{
+				title: "拍照"
+			}, {
+				title: "从相册选择"
+			}];
+			
+			plus.nativeUI.actionSheet({
+				title: "选择照片",
+				cancel: "取消",
+				buttons: btnArray
+			}, function(e) {
+				var index = e.index;
+				switch (index) {
+					case 0:
+						break;
+					case 1:
+						var cmr = plus.camera.getCamera();
+						cmr.captureImage(function(path) {
+							console.log("file://" + plus.io.convertLocalFileSystemURL(path));
+							msgShow('sender','img',"file://" + plus.io.convertLocalFileSystemURL(path));
+						}, function(err) {});
+						break;
+					case 2:
+						plus.gallery.pick(function(path) {
+							console.log(path);
+							msgShow('sender','img',path);
+						}, function(err) {}, null);
+						break;
+				}
+			});
+			
+//			//上传
+//			var options={
+//			    appName: 'jszblog',
+//			    orgName: 'musicbox',
+//			    accessToken: 'YWMtjPPoovCqEeOQs7myPqqaOwAAAUaqNH0a8rRj4PwJLQju6-S47ZO6wYs3Lwo',
+//			    onFileUploadComplete:function(data){
+//			    	//upload file success 
+//			    },
+//			    onFileUploadError:function(e){
+//			    	//upload file error 
+//			    },
+//			    width:100,//only for pic
+//			    heght:100 //only for pic
+//			}
+//			Easemob.im.Helper.upload(options);
+   	    }
+    	
+    	/**
+		 * 接受图片的回调函数
+		 */
+		var handlePictureMessage = function(message) {
+			var maxWidth = 200;
+			var filename = message.filename;//文件名称，带文件扩展名
+			var from = message.from;//文件的发送者
+			var options = message;
+			// 图片消息下载成功后的处理逻辑
+			options.onFileDownloadComplete = function(response, xhr) {
+		    	var objectURL = Easemob.im.Helper.parseDownloadResponse.call(this, response);
+		    	img = document.createElement("img");
+		    	img.onload = function(e) {
+		        	img.onload = null;
+		        	window.URL.revokeObjectURL(img.src);
+		    	};
+		    	img.onerror = function() {
+		        	img.onerror = null;
+			        if (typeof FileReader == 'undefined') {
+			            img.alter = "当前浏览器不支持blob方式";
+			            return;
+			        }
+			        img.onerror = function() {
+			            img.alter = "当前浏览器不支持blob方式";
+			        };
+			        var reader = new FileReader();
+			        reader.onload = function(event) {
+			            img.src = this.result;
+			        };
+			        reader.readAsDataURL(response);
+			    }
+		    	img.src = objectURL;
+		    	var pic_real_width = options.width;
+
+		    	if (!pic_real_width || pic_real_width == 0) {
+					pic_real_width = this.width;
+                    if (pic_real_width > maxWidth) {
+                        img.width = maxWidth;
+                    } else {
+                        img.width = pic_real_width;
+                    }
+	            } else {
+	                if (pic_real_width > maxWidth) {
+	                    img.width = maxWidth;
+	                } else {
+	                    img.width = pic_real_width;
+	                }
+	            }
+	            
+	            // 展示接受的图片
+				msgShow('receiver','img',objectURL); 
+			};
+			options.onFileDownloadError = function(e) {
+			    //下载失败时只重新下载一次
+	            if(redownLoadFileNum < 1){
+	            	redownLoadFileNum++;
+	                options.accessToken = options_c;
+	               	Easemob.im.Helper.download(options);
+	               
+	            }else{
+	              	mui.alert(e.msg + ",下载图片" + filename + "失败");
+	              	redownLoadFileNum = 0;
+	            }
+			};
+			Easemob.im.Helper.download(options);
+		};
+		
+		// 消息滚动
+		var msgScrollTop = function(){
+			ui.msgList.scrollTop = ui.msgList.scrollHeight + ui.msgList.offsetHeight;
+		}
+		
+		// 获得输入框键盘焦点
+		var msgTextFocus = function(){
+			ui.msgText.focus();
+    		setTimeout(function() {
+				ui.msgText.focus();
+			}, 150);
+		}
+		
+		// 强制弹出软键盘
+		var showKeyboard = function() {
+			if (mui.os.ios) {
+				var webView = plus.webview.currentWebview().nativeInstanceObject();
+				webView.plusCallMethod({
+					"setKeyboardDisplayRequiresUserAction": false
+				});
+			} else if(mui.os.android) {
+				var Context = plus.android.importClass("android.content.Context");
+			    var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+			    var main = plus.android.runtimeMainActivity();
+			    var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+			    imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
+			}
+		};
+		
+		/**
+		 * 重写返回事件
+		 */
+		mui.back = function(){
+			var ws = plus.webview.currentWebview();
+			ws.reload(true);
+			ws.hide();
+		}
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title> 
+    <link href="css/mui.min.css" rel="stylesheet"/> 
+</head>
+<body>
+	<button id="open" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开预加载页面</button>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		/*
+		 * 预加载的两种方式：
+		 * - mui.init中配置preloadPages预加载
+		 * - 使用mui.preload方法预加载
+		 * 
+		 * 如果在预加载后马上使用预加载页面对象应该使用mui.preload，
+		 * 因为mui.init中preloadPages完成的时机不容易判断；预加载完
+		 * 成页面loaded事件也完成了，show事件在页面打开时候完成。
+		 */
+      	mui.init({
+//    		preloadPages: [{
+//				url: 'preload.html',
+//				id: 'preload'
+//			}]
+      	});
+      	
+      	mui.plusReady(function(){
+      		window.addEventListener('preload', function() {
+				console.log("preload");
+			});
+      		var ws = mui.preload({
+	      		url: 'preload.html',
+	      		id: 'preload'
+	      	})
+			ws.addEventListener("loaded",function(){
+				console.log('loaded');
+			})
+      	})
+      	
+      	document.getElementById("open").addEventListener('tap',function(){
+      		var ws = plus.webview.getWebviewById('preload');
+      		ws.show();
+      	})
+    </script>
+</body>
+</html>

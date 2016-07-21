@@ -1,0 +1,13 @@
+{
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "img/sinaweibo.png",
+      "img/tencentweibo.png",
+      "img/qq.png",
+      "img/weixin.png"
+    ],
+    "refer": []
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>share</title>
+	<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+	<style type="text/css">
+		.mui-share{
+			position: fixed;
+			bottom: 0px;
+			width: 100%;
+			height: 200px;
+			background-color: #fff;
+			padding: 0px 5px;
+			margin: 0px;
+		}
+		.mui-share li{
+			display: inline-block;
+			width: 25%;
+			margin: 10px auto;
+		}
+		.mui-share li>img{
+			width: 80px;
+			height: 80px;
+		}
+		.mui-share>.mui-btn{
+			position: fixed;
+			bottom: 10px;
+			width: 90%;
+			left: 5%;
+			right: 5%;
+		}
+	</style>
+	</head>
+	<body>
+		<button id="openShare" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开分享</button>
+		
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">	
+			document.getElementById("openShare").addEventListener('tap',function(){
+				share();
+			})	
+		
+			/**
+			 * 分享
+			 */
+			var share = function() {
+				var container = document.createElement('ul');
+				container.className = "mui-share";
+				plus.share.getServices(function(s){	
+					var fragment = document.createDocumentFragment();
+					for(var i=0;i<s.length;i++){
+						var li = document.createElement('li');
+						var img = document.createElement('img');
+						li.id = s[i].id;
+						li.index = i;
+						li.addEventListener('tap',function(){
+							mui.alert(JSON.stringify(s[this.index]));
+							// 在这里写剩下的分享逻辑
+	
+							container.style.display = 'none';
+						});
+						img.src = 'img/' + s[i].id + '.png';
+						li.appendChild(img);
+						fragment.appendChild(li);
+					}
+					var button = document.createElement("button");
+					button.className = "mui-btn mui-btn-blue mui-btn-block";
+					button.innerText = '取消';
+					button.addEventListener('tap',function(){
+						container.style.display = 'none';
+					});
+					container.appendChild(fragment);
+					container.appendChild(button);
+					document.body.appendChild(container);
+				}, function(e){
+					mui.alert( "获取分享服务列表失败："+e.message );
+				});
+			}
+		</script>
+	</body>
+</html>

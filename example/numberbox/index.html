@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/mui.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">标题</h1>
+	</header>
+	<div class="mui-content">			
+	    <h5 class="mui-content-padded">取值操作</h5>
+		<div class="mui-numbox" id="numbox">
+			<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+			<input id="box" class="mui-input-numbox" type="number" value="1"/>
+			<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+		</div>
+	</div>
+	
+	<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var min = 1,max = 32;
+		var box=document.getElementById("box");
+		var lastValue = box.value;
+		box.addEventListener('change',function(){	
+			if(box.value > min && box.value < max){
+				if(box.value > lastValue){			
+					box.value = lastValue*2;
+				}else if(box.value < lastValue){
+					box.value = lastValue/2;
+				}
+				lastValue = box.value;
+			}else if(box.value <= min){
+				box.value = min;
+			}else if(box.value >= max){
+				box.value = max;
+			}
+		});
+	</script>
+</body>
+</html>

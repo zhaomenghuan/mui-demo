@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="css/mui.min.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+</head>
+	<body>
+        <header class="mui-bar mui-bar-nav">
+        	<a class="mui-icon mui-icon-bars mui-pull-left"></a>
+			<h1 class="mui-title">首页</h1>
+			<div class="mui-segmented-control" style="display: none;">
+				<a class="mui-control-item mui-active">消息</a>
+				<a class="mui-control-item">好友</a>
+			</div>
+			<a class="mui-icon mui-icon-plus mui-pull-right"></a>
+		</header>	
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			// mui初始化
+			mui.init();
+			
+			// 子页参数
+			var Index = 0;
+			var subpages = ['html/home.html','html/message.html','html/find.html','html/setting.html'];
+			var subpage_style = {
+				top: '45px',
+				bottom: '50px',
+				zindex:999
+			};
+			
+			// 底部导航栏
+			var tw = null;
+			var tabbar = "html/tabbar.html";
+			var tabbar_style = {
+				height:"60px",
+				bottom:"0px",
+				background: "transparent",
+				zindex:9999
+			}
+			
+			// 创建当前子页面，首个选项卡页面显示
+			mui.plusReady(function(){
+				//获取当前webview作为父webview
+				var self = plus.webview.currentWebview();
+				// 创建当前指定子页
+				var subIndex = plus.webview.create(subpages[Index], subpages[Index], subpage_style);
+				subIndex.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});								
+				self.append(subIndex);
+				plus.webview.show(subIndex);
+				// 创建底部栏
+				tw = plus.webview.create(tabbar,tabbar,tabbar_style);
+				self.append(tw);
+			})
+			
+			//当前激活选项
+			var activeTab = subpages[Index];		
+			// 添加targetTab自定义事件监听
+			window.addEventListener('targetTab',function(event){
+			  	// 获得选项卡点击事件参数
+			  	var targetTitle = event.detail.targetTitle;
+			  	var targetTab = event.detail.targetTab;
+			  	
+			  	// 如果为当前选项则返回
+			  	if (targetTab == activeTab) return;
+			  	
+			  	// 更换标题
+			  	if (targetTab == subpages[1]) {
+			  		mui(".mui-title")[0].style.display = 'none';
+					mui(".mui-segmented-control")[0].style.display = 'block';
+			  	}else{
+			  		mui(".mui-title")[0].style.display = 'block';
+					mui(".mui-segmented-control")[0].style.display = 'none';
+					mui(".mui-title")[0].innerHTML = targetTitle;
+			  	}	
+				
+				if(!plus.webview.getWebviewById(targetTab)){
+					var sub = plus.webview.create(targetTab, targetTab, subpage_style);
+					sub.setBounce({position:{top:"100px"},changeoffset:{top:"0px"}});
+					plus.webview.currentWebview().append(sub);
+					plus.webview.show(sub,'pop-in',300);
+					// 重新加载tabbar
+					tw.show();
+				}else{
+					//显示目标选项卡
+					plus.webview.show(targetTab);
+					// 重新加载tabbar
+					tw.show();
+				}			
+				//隐藏当前;
+				plus.webview.hide(activeTab);
+				//更改当前活跃的选项卡
+				activeTab = targetTab;
+			});
+			
+			//退出事件
+			var first=null;
+			mui.back = function() {
+				//首次按键，提示‘再按一次退出应用’
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			};
+		</script>
+	</body>
+</html>

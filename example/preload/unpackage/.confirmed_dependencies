@@ -1,0 +1,18 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"preload.html"
+		]
+	},
+	"preload.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"js/mui.js",
+			"css/mui.min.css"
+		]
+	}
+}

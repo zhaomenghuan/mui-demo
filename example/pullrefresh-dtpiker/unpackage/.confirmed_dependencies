@@ -1,0 +1,28 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"pullrefresh_main.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"pullrefresh_sub.html"
+		],
+		"refer": [
+			"pullrefresh_sub.html"
+		]
+	},
+	"pullrefresh_sub.html": {
+		"resources": [
+			"js/mui.picker.min.js",
+			"fonts/mui.ttf",
+			"css/mui.picker.min.css",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	}
+}

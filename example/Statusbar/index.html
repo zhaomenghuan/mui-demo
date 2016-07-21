@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>分享宝</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <style>
+			.mui-bar-nav{
+    			background-color: #00B2EE;
+    			background: -webkit-linear-gradient(top,rgba(215,75,40,1),rgba(215,75,40,0.8));
+    			color: #FFF;
+    		}
+			.mui-title{
+    			color:#fff;
+    		}
+            a {
+                color: #fff;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="mui-bar mui-bar-nav">
+            <h1 id="title" class="mui-title">分享宝</h1>
+        </header>
+        <nav class="mui-bar mui-bar-tab">
+            <a id="defaultTab" class="mui-tab-item mui-active" href="about.html">
+                <span class="mui-icon mui-icon-home"></span>
+                <span class="mui-tab-label">首页</span>
+            </a>
+            <a class="mui-tab-item" href="lists.html">
+                <span class="mui-icon mui-icon-bars"></span>
+                <span class="mui-tab-label">分享</span>
+            </a>
+            <a class="mui-tab-item" href="setting.html">
+                <span class="mui-icon mui-icon-contact"></span>
+                <span class="mui-tab-label">我的</span>
+            </a>
+        </nav>
+        <script src="js/mui.min.js"></script>
+        <script>
+             //mui初始化
+            mui.init();
+            var subpages = ['about.html', 'lists.html', 'setting.html'];
+            var aniShow = {};
+            
+             //创建子页面，首个选项卡页面显示，其它均隐藏；
+            mui.plusReady(function() {
+            	var topoffset = '45px';
+            	// 兼容immersed状态栏模式
+            	if(plus.navigator.isImmersedStatusbar()){
+			    	var immersed = 0;
+					var ms=(/Html5Plus\/.+\s\(.*(Immersed\/(\d+\.?\d*).*)\)/gi).exec(navigator.userAgent);
+					if(ms&&ms.length>=3){ // 当前环境为沉浸式状态栏模式
+					    immersed=parseFloat(ms[2]);// 获取状态栏的高度
+					    console.log(immersed);
+					}
+					topoffset = (immersed + 45)+'px';
+			    	document.querySelector(".mui-bar-nav").style.paddingTop = immersed+'px';
+			     	document.querySelector(".mui-bar-nav").style.height = topoffset; 
+			    }
+            	
+                var self = plus.webview.currentWebview();
+                for (var i = 0; i < 3; i++) {
+                    var temp = {};
+                    var sub = plus.webview.create(subpages[i], subpages[i], {
+                    	top: topoffset,
+                		bottom: '51px'
+                    });
+                    if (i > 0) {
+                        sub.hide();
+                    }else{
+                        temp[subpages[i]] = "true";
+                        mui.extend(aniShow,temp);
+                    }
+                    self.append(sub);
+                }
+            });
+             //当前激活选项
+            var activeTab = subpages[0];
+            var title = document.getElementById("title");
+             //选项卡点击事件
+            mui('.mui-bar-tab').on('tap', 'a', function(e) {
+                var targetTab = this.getAttribute('href');
+                if (targetTab == activeTab) {
+                    return;
+                }
+                //更换标题
+                var tname = this.querySelector('.mui-tab-label').innerHTML;
+
+                if (tname == "首页") {
+                    tname = "分享宝";
+                }
+                if (tname == "分享") {
+                    tname = "分享列表";
+                }
+                if (tname == "我的") {
+                    tname = "个人中心";
+                }
+                title.innerHTML = tname;
+                //若为iOS平台或非首次显示，则直接显示
+                if(mui.os.ios||aniShow[targetTab]){
+                    plus.webview.show(targetTab);
+                }else{
+                    //否则，使用fade-in动画，且保存变量
+                    var temp = {};
+                    temp[targetTab] = "true";
+                    mui.extend(aniShow,temp);
+                    plus.webview.show(targetTab,"fade-in",300);
+                }
+                //隐藏当前;
+                plus.webview.hide(activeTab);
+                //更改当前活跃的选项卡
+                activeTab = targetTab;
+            });
+             //自定义事件，模拟点击“首页选项卡”
+            document.addEventListener('gohome', function() {
+                var defaultTab = document.getElementById("defaultTab");
+                //模拟首页点击
+                mui.trigger(defaultTab, 'tap');
+                //切换选项卡高亮
+                var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+                if (defaultTab !== current) {
+                    current.classList.remove('mui-active');
+                    defaultTab.classList.add('mui-active');
+                }
+            });
+            /**
+             * Android返回键处理（IOS只能通过home键来杀掉程序）
+             * 返回逻辑：一秒内连续点击两次，退出程序；
+             * 这个官方已经写的很明白了，这里需要加上这一段代码，防止返回到入口页面；
+             */
+            var first = null;
+            mui.back = function() {
+                if (!first) {
+                    first = new Date().getTime();
+                    plus.nativeUI.toast("再按一次退出应用");
+                    setTimeout(function() {
+                        first = null;
+                    }, 1000);
+                } else {
+                    if (new Date().getTime() - first < 1000) {
+                        plus.runtime.quit();
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
