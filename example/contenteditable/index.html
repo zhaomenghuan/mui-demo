@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>富文本编辑器</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css"/>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+				-webkit-user-select: auto;
+			}
+			.wrap{
+				width: 80%;
+				margin: 20px auto;
+				box-shadow: #272727 0px 0px 5px;
+			} 
+			.edit_wrap{
+				width: 96%;
+				padding: 2%;
+				overflow: auto;
+				line-height: 1.5;
+				outline: none;
+				border: 1px solid #eee;
+			}
+			.icon{
+				width: 25px;
+			}
+			
+			button.mui-btn{
+				width: 80%;
+				margin: 0px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="edit_wrap" contenteditable="true"></div>
+		</div>
+		<button id="add" type="button" class="mui-btn mui-btn-blue mui-btn-block">添加图片</button>
+		
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">		
+			
+			var msgText = document.querySelector(".edit_wrap");
+			document.querySelector('#add').addEventListener('tap',function () {
+				// 添加图片
+				var img = document.createElement("img");
+				img.src = "img/qq.png";
+				img.className = "icon";
+				msgText.appendChild(img); 
+			   
+			    // 光标移动到最后
+			    msgTextLastPos(msgText);
+			    // 获得输入框键盘焦点
+			    msgTextFocus(msgText);		    
+			})
+			
+			// 获得输入框键盘焦点
+			var msgTextFocus = function(obj){
+			    obj.focus();
+			    setTimeout(function() {
+			        obj.focus();
+			    }, 150);
+			}
+			// 光标移动到最后
+			function msgTextLastPos(obj) {
+			    if (window.getSelection) {//ie11 10 9 ff safari
+			        obj.focus(); //解决ff不获取焦点无法定位问题
+			        var range = window.getSelection();//创建range
+			        range.selectAllChildren(obj);//range 选择obj下所有子内容
+			        range.collapseToEnd();//光标移至最后
+			    }
+			    else if (document.selection) {//ie10 9 8 7 6 5
+			        var range = document.selection.createRange();//创建选择对象
+			        range.moveToElementText(obj);//range定位到obj
+			        range.collapse(false);//光标移至最后
+			        range.select();
+			    }
+			}
+		</script>
+	</body>
+</html>

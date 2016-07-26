@@ -1,0 +1,50 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"template.html",
+			"subTemplate.html",
+			"list1.html",
+			"list2.html",
+			"list3.html"
+		]
+	},
+	"template.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"subTemplate.html",
+			"list2.html"
+		],
+		"refer": [
+			"subTemplate.html"
+		]
+	},
+	"list1.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/mui.js",
+			"css/mui.css",
+			"css/app.css"
+		]
+	},
+	"list2.html": {
+		"resources": [
+			"css/mui.css",
+			"fonts/mui.ttf",
+			"css/app.css",
+			"js/mui.js"
+		]
+	},
+	"list3.html": {
+		"resources": [
+			"css/mui.css"
+		]
+	}
+}

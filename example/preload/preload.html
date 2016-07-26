@@ -13,6 +13,7 @@
 		</header>
 		<div class="mui-content">
 		    我是预加载一级页面
+		    <button id='open' type="button" class="mui-btn mui-btn-blue mui-btn-block">按钮</button>
 		</div>
 		
 		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
@@ -22,6 +23,9 @@
 				ws.addEventListener('show',function(){
 					console.log('show');
 				})
+			})
+			document.querySelector('#open').addEventListener('tap',function () {
+			    mui.openWindow('sub.html')
 			})
 		</script>
 	</body>

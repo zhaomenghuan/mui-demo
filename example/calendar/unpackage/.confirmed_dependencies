@@ -1,0 +1,9 @@
+{
+	"index.html": {
+		"resources": [
+			"js/calendar.js",
+			"css/calendar.css",
+			"js/mui.js"
+		]
+	}
+}

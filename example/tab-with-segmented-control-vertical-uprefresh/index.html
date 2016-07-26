@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.mui-row.mui-fullscreen>[class*="mui-col-"] {
+				height: 100%;
+			}
+			.mui-col-xs-3,
+			.mui-control-content {
+				overflow-y: auto;
+				height: 100%;
+			}
+			.mui-segmented-control .mui-control-item {
+				line-height: 50px;
+				width: 100%;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				background-color: #fff;
+			}
+			
+			/*上拉加载样式*/
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">侧面选项卡-div模式</h1>
+		</header>
+		
+		<div class="mui-content mui-row mui-fullscreen">		
+			<div class="mui-col-xs-3">
+				<div id="tab-item" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical"></div>
+			</div>
+			
+			<div id="tab-content" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;"></div>	
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<!--上拉加载依赖组件-->
+		<script src="js/mui.pullToRefresh.js"></script>
+		<script>
+			/*
+			 *  这个地方的dom结构很重要，不然会出现上拉无法正常滚动。
+			 * 
+			 *  DOM结构如下：
+			 	<div class="mui-content mui-row mui-fullscreen">		
+					<div class="mui-col-xs-3">
+						<div id="tab-item" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+							<a class="mui-control-item" href="#content1">选项1</a>
+						</div>
+					</div>
+					
+					<div id="tab-content" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;">
+						<div id="content1" class="mui-control-content mui-scroll-wrapper mui-active">
+							<ul class="mui-scroll mui-table-view">
+							</ul>
+						</div>
+					</div>
+				</div>
+			 */
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			//阻尼系数
+			var deceleration = mui.os.ios?0.003:0.0009;
+			mui('.mui-scroll-wrapper').scroll({
+				bounce: false,
+				indicators: true, //是否显示滚动条
+				deceleration:deceleration
+			});
+			
+			/*上拉*/
+			(function($) {
+				$.ready(function() {
+					/*选项卡的选项*/
+					var tabItem = document.getElementById("tab-item");			
+					var tabItemTpl = '';
+					var m = 5; //左侧选项卡数量+1
+					for (var i = 1; i < m; i++) {
+						tabItemTpl += '<a class="mui-control-item" href="#content' + i + '">选项' + i + '</a>';
+					}
+					tabItem.innerHTML = tabItemTpl;
+					tabItem.querySelector('.mui-control-item').classList.add('mui-active');
+					
+					/*选项卡的内容*/
+					var tabContent = document.getElementById("tab-content");
+					var tabContentTpl = '';
+					var n = 21; //每个选项卡列表数量+1
+					for (var i = 1; i < m; i++) {
+						tabContentTpl += '<div id="content' + i + '" class="mui-control-content mui-scroll-wrapper">';
+						tabContentTpl += '<ul class="mui-scroll mui-table-view">';
+						for (var j = 1; j < n; j++) {
+							tabContentTpl += '<li class="mui-table-view-cell">第' + i + '个选项卡子项-' + j + '</li>';
+						}
+						tabContentTpl += '</ul></div>';
+					}
+					tabContent.innerHTML = tabContentTpl;
+					tabContent.querySelector('.mui-control-content').classList.add('mui-active');
+					
+					// 上拉绑定
+					$.each(document.querySelectorAll('.mui-col-xs-9 .mui-control-content'), function(index, pullRefreshEl) {
+						$(pullRefreshEl).pullToRefresh({
+							up: {
+								callback: function() {
+									var self = this;
+									setTimeout(function() {
+										var ul = self.element.querySelector('.mui-table-view');
+										ul.appendChild(createFragment(ul, index, 5));
+										self.endPullUpToRefresh();
+									}, 2000);
+								}
+							}
+						});
+					});
+					
+					var createFragment = function(ul, index, count, reverse) {
+						var length = ul.querySelectorAll('li').length;
+						var fragment = document.createDocumentFragment();
+						var li;
+						for (var i = 0; i < count; i++) {
+							li = document.createElement('li');
+							li.className = 'mui-table-view-cell';
+							li.innerHTML = '第' + (index + 1) + '个选项卡子项-' + (length + (reverse ? (count - i) : (i + 1)));
+							fragment.appendChild(li);
+						}
+						return fragment;
+					};
+				});
+			})(mui);
+		</script>
+	</body>
+</html>

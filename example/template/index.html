@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <h1 class="mui-title">template(模板页面)</h1>
+	</header>
+	<div class="mui-content">
+	    <ul class="mui-table-view">
+	        <li class="mui-table-view-cell">
+	            <a class="mui-navigate-right" href="list1.html">
+	                Item 1
+	            </a>
+	        </li>
+	        <li class="mui-table-view-cell">
+	            <a class="mui-navigate-right" href="list2.html">
+	                 Item 2
+	            </a>
+	        </li>
+	        <li class="mui-table-view-cell">
+	            <a class="mui-navigate-right" href="list3.html">
+	                 Item 3
+	            </a>
+	        </li>
+	    </ul>
+	</div>
+    
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		
+		mui.plusReady(function () {
+			// 预加载模板父页面
+			var template = mui.preload({
+			    url:'template.html',
+			    id:'template',
+			    styles:{
+			        popGesture:"hide"
+			    }
+			});
+			// 预加载公用子页面
+			var subWebview = mui.preload({
+			    url:'',
+			    id:'sub_template',
+			    styles:{
+			        top: '45px',
+			    	bottom: '0px'
+			    }
+			});
+			// 将子页面填充到父页面
+			template.append(subWebview);
+			
+			mui('.mui-table-view').on('tap','li a',function(){	
+				var self = this;
+				// 修改共用父模板的标题
+				mui.fire(template, 'updateHeader', {
+					title: self.innerText,
+					href: self.href
+				});
+				// 加载子页面地址
+				if(subWebview.getURL()==self.href){
+				    subWebview.show();
+				}else{
+				    subWebview.loadURL(self.href);
+				    // 子页面加载完成显示
+					subWebview.addEventListener('loaded', function() {
+					    setTimeout(function(){
+					        subWebview.show();  
+					    },50);
+					});	
+				}
+				// 显示页面
+				template.show('slide-in-right', 150);			
+			})
+		})
+	</script>
+</body>
+</html>

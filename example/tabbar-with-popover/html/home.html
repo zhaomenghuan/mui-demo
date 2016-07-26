@@ -41,6 +41,14 @@
 		var list = mui("#list")[0];
 		var keyword = mui("#keyword")[0];
 
+		/*监听软键盘右下角搜索按键*/
+		keyword.addEventListener('keydown',function (e) {
+			if(e.keyCode == 13){
+		    	requestData();
+		    }
+		})
+		
+		/*数据请求*/
 		function requestData(){
 			var url = "http://s.music.163.com/search/get/";       
 	        mui.ajax(url,{

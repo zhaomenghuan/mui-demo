@@ -17,17 +17,21 @@ demo地址：https://github.com/zhaomenghuan/mui-demo.git
 
 ## demo列表（example文件夹下）
 
-- easemobIM 环信webim的demo
+- [easemobIM](https://rawgit.com/zhaomenghuan/mui-demo/master/example/easemobIM/index.html): 环信webim的demo
 - [tabbar-div-animation](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-div-animation/index.html): div模式带动画切换的选项卡
-- tabbar-with-popover：解决弹出层被遮挡的问题
-- timeline：时间轴效果
-- numberbox：倍率为2的范围可控的数字增减器
-- popover-control-byjs：js控制的popover
-- slider：加载网络图片的图片轮播
-- share: 使用图片打开分享（TODO）
-- piker: 选择器
-- preload：预加载注意事项
-- tabbar-webview-withleftmenu: 带侧滑的webview模式的tabbar
-- vue-mui: 基于Vue.js的mui tabbar演示例子
-- Statusbar：沉浸式状态栏
-- pullrefresh-dtpiker： 上拉刷新与选择器插件冲突的解决方案
+- [tabbar-with-popover](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-with-popover/main.html)：解决弹出层被遮挡的问题
+- [timeline](https://rawgit.com/zhaomenghuan/mui-demo/master/example/timeline/timeline.html)：时间轴效果
+- [numberbox](https://rawgit.com/zhaomenghuan/mui-demo/master/example/numberbox/index.html)：倍率为2的范围可控的数字增减器
+- [popover-control-byjs](https://rawgit.com/zhaomenghuan/mui-demo/master/example/popover-control-byjs/index.html)：js控制的popover
+- [slider](https://rawgit.com/zhaomenghuan/mui-demo/master/example/slider/index.html)：加载网络图片的图片轮播
+- [share](https://rawgit.com/zhaomenghuan/mui-demo/master/example/share/index.html): 使用图片打开分享（TODO）
+- [piker](https://rawgit.com/zhaomenghuan/mui-demo/master/example/piker/index.html): 选择器
+- [preload](https://rawgit.com/zhaomenghuan/mui-demo/master/example/preload/index.html)：预加载注意事项
+- [tabbar-webview-withleftmenu](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-webview-withleftmenu/main.html): 带侧滑的webview模式的tabbar
+- [vue-mui](https://rawgit.com/zhaomenghuan/mui-demo/master/example/vue-mui/index.html): 基于Vue.js的mui tabbar演示例子
+- [Statusbar](https://rawgit.com/zhaomenghuan/mui-demo/master/example/Statusbar/index.html)：沉浸式状态栏
+- [tab-with-segmented-control-vertical-uprefresh](https://rawgit.com/zhaomenghuan/mui-demo/master/tab-with-segmented-control-vertical-uprefresh/index.html)：左侧选项卡-div模式增加上拉加载功能
+- [contenteditable](https://rawgit.com/zhaomenghuan/mui-demo/master/contenteditable/index.html)：div contenteditable可编辑模式下【获得输入框键盘焦点】和【光标移动到最后】
+- [pullrefresh-dtpiker](https://rawgit.com/zhaomenghuan/mui-demo/master/pullrefresh-dtpiker/index.html)：下拉刷新与时间选择器冲突的解决方案
+- [calendar](https://rawgit.com/zhaomenghuan/mui-demo/master/calendar/index.html)：日历组件
+- [template](https://rawgit.com/zhaomenghuan/mui-demo/master/template/index.html)：模板页面实现原理

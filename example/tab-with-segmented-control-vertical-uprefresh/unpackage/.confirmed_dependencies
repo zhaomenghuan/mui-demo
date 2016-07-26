@@ -1,0 +1,11 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.pullToRefresh.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/mui.pullToRefresh.material.js"
+		]
+	}
+}
