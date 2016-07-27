@@ -10,7 +10,7 @@
 			.mui-popover{
 				position: fixed;
 				width: 80%;
-				height: 30%;
+				height: auto;
 				border-radius: 0;
 	    		left: 50%;
 	    		top: 50%;
@@ -29,7 +29,7 @@
 	</head>
 
 	<body>	
-		<div id="pop" class="mui-popover" >
+		<div id="pop" class="mui-popover">
 			<ul class="mui-table-view">
 		    	<li class="mui-table-view-cell"><a href="#">Item1</a></li>
 		    	<li class="mui-table-view-cell"><a href="#">Item2</a></li>
@@ -38,8 +38,8 @@
 		    	<li class="mui-table-view-cell"><a href="#">Item5</a></li>
 		    </ul>
 		</div>
-		
-		<a id="openPopover" class="mui-btn mui-btn-primary">打开弹出菜单</a>
+
+		<button id="openPopover" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开弹出菜单</button>
 		
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">	
@@ -52,6 +52,12 @@
 			mui('#openPopover')[0].addEventListener('tap',function(){
 				mask.show();//显示遮罩
 				pop.classList.add('mui-active');
+			})
+			
+			// 点击列表
+			mui('.mui-popover .mui-table-view').on('tap','li',function(){
+				pop.classList.remove('mui-active');
+				mask.close();
 			})
 		</script>
 	</body>

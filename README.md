@@ -30,8 +30,8 @@ demo地址：https://github.com/zhaomenghuan/mui-demo.git
 - [tabbar-webview-withleftmenu](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-webview-withleftmenu/main.html): 带侧滑的webview模式的tabbar
 - [vue-mui](https://rawgit.com/zhaomenghuan/mui-demo/master/example/vue-mui/index.html): 基于Vue.js的mui tabbar演示例子
 - [Statusbar](https://rawgit.com/zhaomenghuan/mui-demo/master/example/Statusbar/index.html)：沉浸式状态栏
-- [tab-with-segmented-control-vertical-uprefresh](https://rawgit.com/zhaomenghuan/mui-demo/master/tab-with-segmented-control-vertical-uprefresh/index.html)：左侧选项卡-div模式增加上拉加载功能
-- [contenteditable](https://rawgit.com/zhaomenghuan/mui-demo/master/contenteditable/index.html)：div contenteditable可编辑模式下【获得输入框键盘焦点】和【光标移动到最后】
-- [pullrefresh-dtpiker](https://rawgit.com/zhaomenghuan/mui-demo/master/pullrefresh-dtpiker/index.html)：下拉刷新与时间选择器冲突的解决方案
-- [calendar](https://rawgit.com/zhaomenghuan/mui-demo/master/calendar/index.html)：日历组件
-- [template](https://rawgit.com/zhaomenghuan/mui-demo/master/template/index.html)：模板页面实现原理
+- [tab-with-segmented-control-vertical-uprefresh](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tab-with-segmented-control-vertical-uprefresh/index.html)：左侧选项卡-div模式增加上拉加载功能
+- [contenteditable](https://rawgit.com/zhaomenghuan/mui-demo/master/example/contenteditable/index.html)：div contenteditable可编辑模式下【获得输入框键盘焦点】和【光标移动到最后】
+- [pullrefresh-dtpiker](https://rawgit.com/zhaomenghuan/mui-demo/master/example/pullrefresh-dtpiker/index.html)：下拉刷新与时间选择器冲突的解决方案
+- [calendar](https://rawgit.com/zhaomenghuan/mui-demo/master/example/calendar/index.html)：日历组件
+- [template](https://rawgit.com/zhaomenghuan/mui-demo/master/example/template/index.html)：模板页面实现原理
