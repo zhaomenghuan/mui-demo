@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+   	<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title"></h1>
+	    <a id="add" class="mui-icon mui-icon-plus mui-pull-right"></a>
+	</header>
+	
+	<div class="mui-content">
+	    <ul id="list" class="mui-table-view mui-table-view-chevron"></ul>
+	</div>
+	
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/njs-io.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+		  gestureConfig:{
+		   longtap: true //默认为false
+		  }
+		});
+		
+		var subRoot = null;
+		document.addEventListener("plusready", function(){
+			var self = plus.webview.currentWebview();
+			init(self.name,self.filepath);
+		}, false);
+		
+		// 渲染列表
+		function init(name,filepath){
+			// 设置标题
+			document.querySelector('.mui-title').innerHTML = name;
+			
+			// 获得sd卡根目录
+			var File = plus.android.importClass("java.io.File");
+			subRoot = new File(filepath);
+			
+			// 遍历sd卡根目录下的所有文件和文件夹
+			var files = plus.android.invoke(subRoot,"listFiles");
+           	var len = files.length;
+           	
+           	var list = document.getElementById("list");
+           	var fragmentFolder = document.createDocumentFragment();   
+           	var fragmentFile = document.createDocumentFragment();   
+            var li;
+            for(var i=0;i<len;i++){
+            	var file = files[i];
+            	// 过滤隐藏文件
+            	if(!plus.android.invoke(file,"isHidden")){
+					var name = plus.android.invoke(file,"getName");
+					li= document.createElement('li');
+					li.className = 'mui-table-view-cell mui-media';
+					li.setAttribute('name',name);
+					
+					// 判断是文件还是文件夹
+	            	if(plus.android.invoke(file,"isDirectory")){
+	            		// 设置标志为文件夹，供后面使用
+	            		li.setAttribute('data-type', 'Folder');
+	            		// 读取文件夹下子文件夹及子文件数目
+	            		var obj = readSonFilenum(file);
+	            		li.innerHTML = '<a class="mui-navigate-right">'+
+							'<img class="mui-media-object mui-pull-left" src="img/folder.png">'+
+							'<div class="mui-media-body">'+ name +
+							'<p class="mui-ellipsis">文件夹数量：'+ obj.subFolderNum + ' 文件数量：'+ obj.subFileNum +'</p></div></a>';
+						fragmentFolder.appendChild(li);
+		        	}else{
+		        		li.setAttribute('data-type', 'File');
+		        		// 读文件大小
+		        		var fileSizeString = readFileSize(file);		
+				        li.innerHTML = '<a class="mui-navigate-right">'+
+							'<img class="mui-media-object mui-pull-left" src="img/file.png">'+
+							'<div class="mui-media-body mui-ellipsis">'+ name +
+							'<p class="mui-ellipsis">'+ fileSizeString +'</p></div></a>';
+						fragmentFile.appendChild(li);
+		        	}
+            	};
+            }
+            list.appendChild(fragmentFolder);   
+            list.appendChild(fragmentFile);   
+		}
+		
+		/*打开文件*/
+		mui('.mui-table-view').on('tap','li',function(){
+			var name = this.getAttribute('name');
+			var fileType = this.getAttribute('data-type');
+			var filepath = subRoot + '/' + name;
+			
+			if(fileType === 'Folder'){	
+				plus.nativeUI.toast('本例子为演示例子，此处进一步打开文件夹不做演示。')
+			}else{
+				// 打开文件
+				plus.runtime.openFile(filepath);
+			}
+		}) 
+		
+		// 创建文件夹
+		document.querySelector('#add').addEventListener('tap',function (e) {
+			e.detail.gesture.preventDefault(); //修复iOS 8.x平台存在的bug，使用plus.nativeUI.prompt会造成输入法闪一下又没了
+
+			var btnArray = ['取消', '确定'];
+			mui.prompt('请输入要创建的文件夹名:', '文件夹名', '创建文件夹', btnArray, function(e) {
+				if (e.index == 1) {
+					creatFolder(subRoot+"/"+e.value);
+				} else {
+					plus.nativeUI.toast('你点了取消按钮');
+				}
+			})
+		})
+		
+		// 长按删除文件
+		mui('.mui-table-view').on('longtap','li',function(){
+			var name = this.getAttribute('name');
+		  	
+		  	var btnArray = ['取消', '确定'];
+			mui.confirm('你确定要删除这个文件夹？', '删除文件夹', btnArray, function(e) {
+				if (e.index == 1) {
+					deleteFile(subRoot+"/"+name);
+				} else {
+					plus.nativeUI.toast('你点了取消按钮');
+				}
+			})
+		}) 
+	</script>
+</body>
+</html>

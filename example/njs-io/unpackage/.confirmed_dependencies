@@ -1,0 +1,28 @@
+{
+	"index.html": {
+		"resources": [
+			"js/njs.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf",
+			"js/mui.min.js",
+			"img/folder.png",
+			"img/file.png",
+			"js/njs-io.js",
+			"circles.css",
+			"css/circles.css"
+		],
+		"refer": [
+			"sub.html"
+		]
+	},
+	"sub.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/njs-io.js",
+			"img/folder.png",
+			"img/file.png"
+		]
+	}
+}
