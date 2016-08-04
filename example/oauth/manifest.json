@@ -1,7 +1,7 @@
 {
 	"@platforms": ["android", "iPhone", "iPad"],
-	"id": "H5B1B68F9",/*应用的标识，创建应用时自动生成，勿手动修改*/
-	"name": "easemobIM",/*应用名称，程序桌面图标名称*/
+	"id": "H5417A4D9",/*应用的标识，创建应用时自动生成，勿手动修改*/
+	"name": "oauth",/*应用名称，程序桌面图标名称*/
 	"version": {
 		"name": "1.0.0",/*应用版本名称*/
 		"code": "83"
@@ -101,7 +101,7 @@
         },
         "NativeObj":{
         	"description": "原生对象"
-        }
+        },"OAuth":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -110,7 +110,7 @@
 		},
 		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
-		"distribute": {
+		"distribute": {"plugins":{"oauth":{"qq":{"appid":""},"sina":{"appkey":"","appsecret":"","redirect_uri":""},"weixin":{"appid":"","appsecret":""}}},
 			"apple": {
 				"appid": "",/*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
 				"mobileprovision": "",/*iOS应用打包配置文件*/
@@ -194,113 +194,11 @@
 		"pages": {
 			"index.html": {
 				"resources": [
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"sdk/strophe.js",
-					"sdk/easemob.im-1.1.shim.js",
-					"sdk/easemob.im-1.1.js",
-					"js/easemob.im.config.js",
-					"fonts/mui.ttf"
-				],
-				"refer": [
-					"html/reg.html",
-					"html/tab-webview-main.html"
-				],
-				"priority": 0
-			},
-			"html/reg.html": {
-				"resources": [
-					"sdk/strophe.js",
-					"fonts/mui.ttf",
-					"sdk/easemob.im-1.1.shim.js",
-					"sdk/easemob.im-1.1.js",
-					"js/easemob.im.config.js",
-					"js/mui.min.js",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"html/tab-webview-main.html": {
-				"resources": [
-					"html/tab-webview-subpage-chat.html",
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css",
-					"sdk/strophe.js",
-					"sdk/easemob.im-1.1.shim.js",
-					"sdk/easemob.im-1.1.js",
-					"js/easemob.im.config.js",
-					"js/gettoken.js"
-				],
-				"refer": [
-					"html/tab-webview-subpage-setting.html",
-					"html/tab-webview-subpage-contact.html"
-				],
-				"priority": 0
-			},
-			"html/tab-webview-subpage-setting.html": {
-				"resources": [
-					"js/mui.min.js",
-					"fonts/mui.ttf",
-					"css/mui.min.css"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"html/tab-webview-subpage-chat.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"js/mui.js"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"html/tab-webview-subpage-contact.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"sdk/strophe.js",
-					"sdk/easemob.im-1.1.shim.js",
-					"sdk/easemob.im-1.1.js",
-					"js/easemob.im.config.js",
-					"js/template.js"
-				],
-				"refer": [
-					"html/single-chat.html"
-				],
-				"priority": 0
-			},
-			"html/single-chat.html": {
-				"resources": [
-					"fonts/mui.ttf",
-					"js/mui.min.js",
-					"css/mui.min.css",
-					"img/chat-1.png",
-					"img/chat-2.png",
-					"img/test.jpg",
-					"sdk/strophe.js",
-					"sdk/easemob.im-1.1.shim.js",
-					"sdk/easemob.im-1.1.js",
-					"js/easemob.im.config.js",
-					"js/chatMsg.js",
-					"css/chat-msg.css",
-					"html/chat-msg.html",
-					"js/gettoken.js",
-					"js/easemob.im.utils.js",
-					"js/plus.easemob.im.js",
-					"js/url2blob.js",
-					"js/fetch.js"
-				],
-				"refer": [],
-				"priority": 0
-			},
-			"html/chat-msg.html": {
-				"resources": [
-					"js/mui.min.js",
-					"css/mui.min.css"
+					"images/sinaweibo.png",
+					"images/weixin.png",
+					"js/mui.js",
+					"images/qq.png",
+					"css/mui.css"
 				],
 				"refer": [],
 				"priority": 0
@@ -308,12 +206,10 @@
 		},
 		"idle": {
 			"resources": [
-				"sdk/LICENSE",
-				"sdk/release.txt",
-				"css/mui.css",
-				"img/icon_user.jpg",
-				"sdk/quickstart.md",
-				"img/icon_password.jpg"
+				"js/mui.min.js",
+				"fonts/mui.ttf",
+				"css/mui.min.css",
+				"images/qihoo.png"
 			]
 		}
 	}

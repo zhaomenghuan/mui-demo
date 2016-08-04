@@ -23,7 +23,8 @@
 			"js/easemob.im.config.js",
 			"js/mui.min.js",
 			"css/mui.min.css"
-		]
+		],
+		"refer": []
 	},
 	"html/tab-webview-main.html": {
 		"resources": [
@@ -34,7 +35,8 @@
 			"sdk/strophe.js",
 			"sdk/easemob.im-1.1.shim.js",
 			"sdk/easemob.im-1.1.js",
-			"js/easemob.im.config.js"
+			"js/easemob.im.config.js",
+			"js/gettoken.js"
 		],
 		"refer": [
 			"html/tab-webview-subpage-setting.html",
@@ -47,7 +49,8 @@
 			"js/mui.min.js",
 			"fonts/mui.ttf",
 			"css/mui.min.css"
-		]
+		],
+		"refer": []
 	},
 	"html/tab-webview-subpage-chat.html": {
 		"resources": [
@@ -55,7 +58,8 @@
 			"css/mui.min.css",
 			"fonts/mui.ttf",
 			"js/mui.js"
-		]
+		],
+		"refer": []
 	},
 	"html/tab-webview-subpage-contact.html": {
 		"resources": [
@@ -85,7 +89,12 @@
 			"js/easemob.im.config.js",
 			"js/chatMsg.js",
 			"css/chat-msg.css",
-			"html/chat-msg.html"
+			"html/chat-msg.html",
+			"js/gettoken.js",
+			"js/easemob.im.utils.js",
+			"js/plus.easemob.im.js",
+			"js/url2blob.js",
+			"js/fetch.js"
 		],
 		"refer": [
 			"html/chat-msg.html"
@@ -95,6 +104,7 @@
 		"resources": [
 			"js/mui.min.js",
 			"css/mui.min.css"
-		]
+		],
+		"refer": []
 	}
 }

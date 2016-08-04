@@ -5,9 +5,8 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 ## 说明
 本仓库会收集mui一系列demo，欢迎各位fork and push。
 
-专栏地址：https://segmentfault.com/blog/mui
-
-demo地址：https://github.com/zhaomenghuan/mui-demo.git
+- 专栏地址：https://segmentfault.com/blog/mui
+- demo地址：https://github.com/zhaomenghuan/mui-demo.git
 
 内容分类说明：
 - example：文件夹下存放mui相关demo
@@ -36,4 +35,5 @@ demo地址：https://github.com/zhaomenghuan/mui-demo.git
 - [calendar](https://rawgit.com/zhaomenghuan/mui-demo/master/example/calendar/index.html)：日历组件
 - [template](https://rawgit.com/zhaomenghuan/mui-demo/master/example/template/index.html)：模板页面实现原理
 - [tabbar-with-iframe](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-with-iframe/tab-webview-main.html) iframe兼容处理tababr的方法
-- [njs-io](https://rawgit.com/zhaomenghuan/mui-demo/master/example/njs-io/index.html) nativejs 基于native.js的文件系统管理功能实现
+- [njs-io](https://rawgit.com/zhaomenghuan/mui-demo/master/example/njs-io/index.html)：基于native.js的文件系统管理功能实现
+- [oauth](https://rawgit.com/zhaomenghuan/mui-demo/master/example/oauth/index.html)：判断本地是否安装客户端,进行第三方登录

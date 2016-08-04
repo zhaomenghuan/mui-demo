@@ -1,0 +1,11 @@
+{
+	"index.html": {
+		"resources": [
+			"images/sinaweibo.png",
+			"images/weixin.png",
+			"js/mui.js",
+			"images/qq.png",
+			"css/mui.css"
+		]
+	}
+}

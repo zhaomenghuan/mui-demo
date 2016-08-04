@@ -28,7 +28,6 @@
 			overflow: auto;
 			-webkit-overflow-scrolling: touch;
 		}
-		
 			
 		footer {
 			position: fixed;
@@ -53,6 +52,17 @@
 			line-height: 100%;
 			padding: 12px 4px;
 		}
+		.footer-left input[type="file"] {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			cursor: pointer;
+			z-index: 0;
+		}
+		
 		.footer-right {
 			position: absolute;
 			width: 50px;
@@ -109,7 +119,7 @@
 	</div>
 	<footer>
 		<div class="footer-left">
-			<i id='msg-choose-img' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+			<i id='msg-choose-img' class="mui-icon mui-icon-image"></i>
 		</div>
 		<div class="footer-center">
 			<textarea id='msg-text' type="text" class='input-text'></textarea>
@@ -120,13 +130,14 @@
 	</footer>
 	
 	<script src="../js/mui.min.js"></script>
-	<script src="../js/chatMsg.js" type="text/javascript" charset="utf-8"></script>
 	<!--sdk-->
 	<script src="../sdk/strophe.js"></script>
 	<script src="../sdk/easemob.im-1.1.js"></script>
 	<script src="../sdk/easemob.im-1.1.shim.js"></script><!--兼容老版本sdk需引入此文件-->
 	<!--config-->
 	<script src="../js/easemob.im.config.js"></script>
+	<script src="../js/chatMsg.js"></script>
+	<script src="../js/plus.easemob.im.js"></script>
 	<script type="text/javascript" charset="UTF-8">
       	// UI控件对象
 		var ui = {
@@ -134,9 +145,10 @@
 			msgList: mui('#msg-list')[0],
 			footer: mui('footer')[0],
 			msgChooseImg: mui("#msg-choose-img")[0],
-			msgText: mui('#msg-text')[0],
+			msgInputText: mui('#msg-text')[0],
 			msgSendText: mui('#msg-send-text')[0]
 		}
+		
       	// 消息初始化
 		var msgInit = {
 			el: '#msg-list', //消息容器
@@ -144,6 +156,7 @@
 			receiverAvatar: '../img/chat-2.png', //接收者头像
 		}
       	
+      	// mui初始化
 		mui.init({
 			gestureConfig: {
 				tap: true, //默认为true
@@ -174,13 +187,7 @@
 				},
 				// 收到文本消息时的回调函数
 			    onTextMessage : function(message) {
-					// console.log(JSON.stringify(message));
-					var from = message.from;//消息的发送者
-					var msg = message.data;//文本消息体	
-					//mui.toast(msg);
-					// 收到文本消息在页面展示
-					msgShow('receiver','text',msg);
-					msgScrollTop();
+					handleTextMessage(message);
 				},
 				// 收到图片消息时的回调函数
 				onPictureMessage : function(message) {
@@ -188,11 +195,18 @@
 			   	}
 			});
 			
+			var username = plus.storage.getItem("username");
+			var password = plus.storage.getItem("password");
 			// 打开连接
 			conn.open({
-			   	user : plus.storage.getItem("username"),
-			   	pwd : plus.storage.getItem("password"),
+			   	user : username,
+			   	pwd : password,
 			   	appKey : Easemob.im.config.appkey
+			});
+			
+			// 获取token
+			AppIM.getToken(function(token){
+				console.log(token);
 			});
     	});
     	
@@ -208,31 +222,31 @@
     	
 		// 解决长按“发送”按钮，导致键盘关闭的问题；
 		ui.msgSendText.addEventListener('touchstart', function(event) {
-			msgTextFocus();
+			msgInputTextFocus();
 			event.preventDefault();
 		});
 		ui.msgSendText.addEventListener('touchmove', function(event) {
-			msgTextFocus();
+			msgInputTextFocus();
 			event.preventDefault();
 		});
 		
 		// 输入框监听事件
-    	ui.msgText.addEventListener('input', function(event) {
-    		msgTextFocus();
+    	ui.msgInputText.addEventListener('input', function(event) {
+    		msgInputTextFocus();
 			ui.footer.style.height = this.scrollHeight + 'px';
 		});
-		
-		/*消息滚动*/
+    	
+    	// 调整窗口
     	window.addEventListener('resize', function() {
 			msgScrollTop();
 		}, false);
-		
+    	
     	// 发送文本
     	var sendText = function(){
-    		var msg = ui.msgText.value.replace(new RegExp('\n', 'gm'), '<br/>');
+    		var msg = ui.msgInputText.value.replace(new RegExp('\n', 'gm'), '<br/>');
     		var validateReg = /^\S+$/;
     		// 获得输入框键盘焦点
-    		msgTextFocus();
+    		msgInputTextFocus();
     		// 消息判断
     		if(validateReg.test(msg)){
     			msgShow('sender','text',msg);
@@ -244,70 +258,85 @@
 				    //ext :{"extmsg":"extends messages"}//用户自扩展的消息内容（群聊用法相同）
 				});		
 				// 清空文本框
-				ui.msgText.value = '';
+				ui.msgInputText.value = '';
 				// 恢复输入框高度(因为我们这里是50px)
 				ui.footer.style.height = '50px';
 				// 保持输入状态
-				mui.trigger(ui.msgText, 'input', null);
+				mui.trigger(ui.msgInputText, 'input', null);
 				// 这一句让内容滚动起来
 				msgScrollTop();
     		}else{
     			mui.toast("文本消息不能为空");
     		}
     	}
-
+    	
     	// 发送照片
-    	var sendImg = function () {
-    		var btnArray = [{
-				title: "拍照"
-			}, {
-				title: "从相册选择"
-			}];
-			
-			plus.nativeUI.actionSheet({
-				title: "选择照片",
-				cancel: "取消",
-				buttons: btnArray
-			}, function(e) {
-				var index = e.index;
-				switch (index) {
-					case 0:
-						break;
-					case 1:
-						var cmr = plus.camera.getCamera();
-						cmr.captureImage(function(path) {
-							console.log("file://" + plus.io.convertLocalFileSystemURL(path));
-							msgShow('sender','img',"file://" + plus.io.convertLocalFileSystemURL(path));
-						}, function(err) {});
-						break;
-					case 2:
-						plus.gallery.pick(function(path) {
-							console.log(path);
-							msgShow('sender','img',path);
-						}, function(err) {}, null);
-						break;
+    	var sendImg = function (){
+    		// 选择图片
+    		var fileInput = document.createElement('input');
+    		fileInput.setAttribute('id','sendImgInput');
+			fileInput.setAttribute('type', 'file');
+			fileInput.setAttribute('accept', 'image/*');
+			fileInput.addEventListener('change', function(event) {
+				var file = fileInput.files[0];
+				if (file) {
+					// 上传到服务器并且发送
+					conn.sendPicture({
+						fileInputId: 'sendImgInput',
+						to: chatName,
+						onFileUploadError: function(error) {
+							//处理图片上传失败
+							alert(JSON.stringify(error));
+						},
+						onFileUploadComplete: function(data) {
+							//处理图片上传成功，如本地消息显示
+							console.log("发送成功");
+							var reader = new FileReader();
+							reader.onload = function() {
+								//处理 android 4.1 兼容问题
+								var base64 = reader.result.split(',')[1];
+								var dataUrl = 'data:image/png;base64,' + base64;
+								// 消息展示
+								msgShow('sender','img',dataUrl);
+								msgScrollTop();
+							}
+							reader.readAsDataURL(file);
+						}
+					});
 				}
-			});
+			}, false);
+			document.querySelector(".footer-left").appendChild(fileInput);
 			
-//			//上传
-//			var options={
-//			    appName: 'jszblog',
-//			    orgName: 'musicbox',
-//			    accessToken: 'YWMtjPPoovCqEeOQs7myPqqaOwAAAUaqNH0a8rRj4PwJLQju6-S47ZO6wYs3Lwo',
-//			    onFileUploadComplete:function(data){
-//			    	//upload file success 
-//			    },
-//			    onFileUploadError:function(e){
-//			    	//upload file error 
-//			    },
-//			    width:100,//only for pic
-//			    heght:100 //only for pic
-//			}
-//			Easemob.im.Helper.upload(options);
-   	    }
+			// 压缩图片
+//			plus.zip.compressImage({
+//				src: path,
+//				dst: "_doc/" + dstName,
+//				quality:20
+//			},
+//			function(event) {
+//				console.log("Compress success!");
+//				// 压缩转换后的图片url路径，以"file://"开头
+//				var target = event.target; 
+//				
+//			},function(error) {
+//				console.log("Compress error!");
+//			});
+    	}
     	
     	/**
-		 * 接受图片的回调函数
+    	 * 接受文本消息的回调函数
+    	 * @param {Object} message
+    	 */
+    	var handleTextMessage = function(message) {
+    		var from = message.from;//消息的发送者
+			var msg = message.data;//文本消息体	
+			// 收到文本消息在页面展示
+			msgShow('receiver','text',msg);
+			msgScrollTop();
+    	}
+    	
+    	/**
+		 * 接受图片消息的回调函数
 		 */
 		var handlePictureMessage = function(message) {
 			var maxWidth = 200;
@@ -357,6 +386,8 @@
 	            
 	            // 展示接受的图片
 				msgShow('receiver','img',objectURL); 
+				// 这一句让内容滚动起来
+				msgScrollTop();
 			};
 			options.onFileDownloadError = function(e) {
 			    //下载失败时只重新下载一次
@@ -379,10 +410,10 @@
 		}
 		
 		// 获得输入框键盘焦点
-		var msgTextFocus = function(){
-			ui.msgText.focus();
+		var msgInputTextFocus = function(){
+			ui.msgInputText.focus();
     		setTimeout(function() {
-				ui.msgText.focus();
+				ui.msgInputText.focus();
 			}, 150);
 		}
 		

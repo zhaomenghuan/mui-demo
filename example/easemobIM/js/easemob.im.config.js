@@ -11,7 +11,7 @@ Easemob.im.config = {
     /*
         连接时提供appkey
     */
-    appkey: 'jszblog#musicbox',
+    appkey: '',
     /*
      * 是否使用https 
      */
