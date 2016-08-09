@@ -23,7 +23,7 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [numberbox](https://rawgit.com/zhaomenghuan/mui-demo/master/example/numberbox/index.html)：倍率为2的范围可控的数字增减器
 - [popover-control-byjs](https://rawgit.com/zhaomenghuan/mui-demo/master/example/popover-control-byjs/index.html)：js控制的popover
 - [slider](https://rawgit.com/zhaomenghuan/mui-demo/master/example/slider/index.html)：加载网络图片的图片轮播
-- [share](https://rawgit.com/zhaomenghuan/mui-demo/master/example/share/index.html): 使用图片打开分享（TODO）
+- [share](https://rawgit.com/zhaomenghuan/mui-demo/master/example/share/index.html): 使用图片打开分享
 - [piker](https://rawgit.com/zhaomenghuan/mui-demo/master/example/piker/index.html): 选择器
 - [preload](https://rawgit.com/zhaomenghuan/mui-demo/master/example/preload/index.html)：预加载注意事项
 - [tabbar-webview-withleftmenu](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-webview-withleftmenu/main.html): 带侧滑的webview模式的tabbar
