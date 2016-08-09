@@ -6,78 +6,140 @@
 	<title>share</title>
 	<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
 	<style type="text/css">
-		.mui-share{
-			position: fixed;
-			bottom: 0px;
-			width: 100%;
-			height: 200px;
-			background-color: #fff;
-			padding: 0px 5px;
-			margin: 0px;
-		}
+	    .mui-share{
+	       position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 180px;
+            background-color: #fff;
+            padding: 10px 5px;
+            margin: 0px;
+	    }
 		.mui-share li{
-			display: inline-block;
-			width: 25%;
-			margin: 10px auto;
+		    float: left;
+		    width: 20%;
+		    text-align: center;
 		}
-		.mui-share li>img{
-			width: 80px;
-			height: 80px;
-		}
-		.mui-share>.mui-btn{
-			position: fixed;
-			bottom: 10px;
-			width: 90%;
-			left: 5%;
-			right: 5%;
-		}
+		.mui-share li img{
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .mui-share li .mui-subtitle{
+           font-family: "microsoft yahei";
+        }
+        .mui-share .mui-btn{
+            position: fixed;
+            bottom: 10px;
+            width: 90%;
+            left: 5%;
+            right: 5%;
+        }
 	</style>
 	</head>
 	<body>
 		<button id="openShare" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开分享</button>
-		
+        
+        <ul class="mui-share mui-list-inline mui-hidden">
+            <li data-id="weixin" data-scene="WXSceneSession">
+                <img src="img/weixin.png"/>
+                <span class="mui-subtitle">微信好友</span>
+            </li>
+            <li data-id="weixin" data-scene="WXSceneTimeline">
+                <img src="img/pengyouquan.png"/>
+                <span class="mui-subtitle">朋友圈</span>
+            </li>
+            <li data-id="sinaweibo">
+                <img src="img/sinaweibo.png"/>
+                <span class="mui-subtitle">新浪微博</span>
+            </li>
+            <li data-id="tencentweibo">
+                <img src="img/tencentweibo.png"/>
+                <span class="mui-subtitle">腾讯微博</span>
+            </li>
+            <li data-id="qq">
+                <img src="img/qq.png"/>
+                <span class="mui-subtitle">qq好友</span>
+            </li>
+            <button type="button" class="mui-btn mui-btn-blue mui-btn-block">取消</button>
+        </ul>
+
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">	
+		    var shareClassName = document.querySelector('.mui-share');
+		    // 打开分享
 			document.getElementById("openShare").addEventListener('tap',function(){
-				share();
+			    shareClassName.classList.remove('mui-hidden');
 			})	
-		
+			
+			// 取消分享
+			document.querySelector('.mui-share .mui-btn').addEventListener('tap',function(){
+			    shareClassName.classList.add('mui-hidden');
+			})
+			
+			// 分享操作
+            var shares = {};
+            mui.plusReady(function () {
+                // 获取分享服务
+                plus.share.getServices(function(s) {
+                    if (s && s.length > 0) {
+                        for (var i = 0; i < s.length; i++) {
+                            var t = s[i];
+                            shares[t.id] = t;
+                        }
+                    }
+                }, function() {
+                    console.log("获取分享服务列表失败");
+                });
+            })
+			
 			/**
-			 * 分享
+			 * 监听分享点击事件
 			 */
-			var share = function() {
-				var container = document.createElement('ul');
-				container.className = "mui-share";
-				plus.share.getServices(function(s){	
-					var fragment = document.createDocumentFragment();
-					for(var i=0;i<s.length;i++){
-						var li = document.createElement('li');
-						var img = document.createElement('img');
-						li.id = s[i].id;
-						li.index = i;
-						li.addEventListener('tap',function(){
-							mui.alert(JSON.stringify(s[this.index]));
-							// 在这里写剩下的分享逻辑
-	
-							container.style.display = 'none';
-						});
-						img.src = 'img/' + s[i].id + '.png';
-						li.appendChild(img);
-						fragment.appendChild(li);
-					}
-					var button = document.createElement("button");
-					button.className = "mui-btn mui-btn-blue mui-btn-block";
-					button.innerText = '取消';
-					button.addEventListener('tap',function(){
-						container.style.display = 'none';
-					});
-					container.appendChild(fragment);
-					container.appendChild(button);
-					document.body.appendChild(container);
-				}, function(e){
-					mui.alert( "获取分享服务列表失败："+e.message );
-				});
-			}
+			mui('.mui-share').on('tap','li',function(e){
+			    var id = this.getAttribute('data-id');
+			    var scene = this.getAttribute('data-scene');
+			    console.log(id);
+			    var share = shares[id];
+			    if (share) {
+                    if (share.authenticated) {
+                        shareMessage(share, scene);
+                    } else {
+                        share.authorize(function() {
+                            shareMessage(share, scene);
+                        }, function(e) {
+                            mui.toast("认证授权失败：" + e.code + " - " + e.message);
+                        });
+                    }
+                } else {
+                    mui.toast("无法获取分享服务，请检查manifest.json中分享插件参数配置，并重新打包")
+                }
+			}) 
+
+            /**
+             * 分享发送消息
+             * @param {Object} share
+             * @param {Object} ex
+             */
+			function shareMessage(share, scene) {
+                var msg = {
+                    extra: {
+                        scene: scene
+                    }
+                };
+                msg.href = "http://www.dcloud.io/hellomui/";
+                msg.title = "最接近原生APP体验的高性能前端框架";
+                msg.content = "我正在体验HelloMUI，果然很流畅，基本看不出和原生App的差距";
+                if (~share.id.indexOf('weibo')) {
+                    msg.content += "；体验地址：http://www.dcloud.io/hellomui/";
+                }
+                msg.thumbs = ["_www/images/logo.png"];
+                share.send(msg, function() {
+                    mui.toast("分享到\"" + share.description + "\"成功！ ");
+                }, function(e) {
+                    mui.toast("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
+                });
+            }
 		</script>
 	</body>
 </html>

@@ -20,5 +20,4 @@ Easemob.im.config = {
      * 是否使用多resource
      */
     multiResources: false
-
 }
