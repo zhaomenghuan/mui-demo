@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title> 
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+</head>
+<body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function(){
+			var self = plus.webview.currentWebview();
+			var musicId = self.musicId;
+			var audioUrl = self.audioUrl;
+			document.write("musicId:" + musicId + "<br />");
+			document.write("audioUrl:" + audioUrl);
+		});
+	</script>
+</body>
+</html>
