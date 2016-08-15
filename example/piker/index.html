@@ -80,7 +80,9 @@
 			document.getElementById("chooseTime").addEventListener('tap', function() {
 				var dtpicker = new mui.DtPicker({
 				    "type":"date",
-				    "value":"2015-10-10"
+				    "value":"2015-10-10",
+				    "beginDate": new Date(2015, 04, 01),//设置开始日期
+                    "endDate": new Date(2016, 04, 10),//设置结束日期
 				})
 				dtpicker.show(function(rs) {
 				    //mui.alert(rs.text);
