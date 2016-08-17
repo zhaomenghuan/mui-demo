@@ -1,0 +1,40 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"html/home.html"
+		],
+		"refer": [
+			"html/setting.html",
+			"html/message.html",
+			"html/home.html"
+		]
+	},
+	"html/home.html": {
+		"resources": [
+			"img/60x60.gif",
+			"js/mui.lazyload.js",
+			"js/mui.lazyload.img.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"html/music.html"
+		]
+	},
+	"html/music.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"html/message.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	}
+}

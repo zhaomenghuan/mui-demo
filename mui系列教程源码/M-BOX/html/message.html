@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+</head>
+<body>
+	<div class="mui-content">
+	    
+	    <script src="../js/mui.min.js"></script>
+	    <script type="text/javascript">
+	    	var url = "http://s.music.163.com/search/get/";       
+			mui.ajax(url,{
+				data: {
+			       'type': 1,
+			        's': "喜欢你",
+			        'limit': 10
+			    },
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					console.log(data);
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+	    </script>
+	</div>
+</body>
+</html>
