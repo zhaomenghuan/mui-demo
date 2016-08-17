@@ -37,3 +37,4 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [tabbar-with-iframe](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-with-iframe/tab-webview-main.html) iframe兼容处理tababr的方法
 - [njs-io](https://rawgit.com/zhaomenghuan/mui-demo/master/example/njs-io/index.html)：基于native.js的文件系统管理功能实现
 - [oauth](https://rawgit.com/zhaomenghuan/mui-demo/master/example/oauth/index.html)：判断本地是否安装客户端,进行第三方登录
+- [Audio](https://rawgit.com/zhaomenghuan/mui-demo/master/example/Audio/index.html): 录音转dataURI,dataURI转语音文件播放

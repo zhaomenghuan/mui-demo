@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>  
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/audio.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <h1 class="mui-title">录音</h1>
+	</header>
+	<div class="mui-content mui-content-padded">
+	    <button id="recorder" type="button" class="mui-btn mui-btn-blue mui-btn-block">Audio2dataURL</button>
+		<button id="player" type="button" class="mui-btn mui-btn-blue mui-btn-block">dataURL2Audio</button>
+	</div>
+	
+	<div id='sound-alert' class="rprogress">
+		<div class="rschedule"></div>
+		<div class="r-sigh">!</div>
+		<div id="audio-tips" class="rsalert">手指上滑，取消发送</div>
+	</div>
+	
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+      	mui.init({
+			gestureConfig: {
+				tap: true, //默认为true
+				doubletap: true, //默认为false
+				longtap: true, //默认为false
+				swipe: true, //默认为true
+				drag: true, //默认为true
+				hold: true, //默认为false，不监听
+				release: true //默认为false，不监听
+			}
+		});
+      	
+      	var MIN_SOUND_TIME = 800;
+      	var recorder = null;
+      	var startTimestamp = null;
+		var stopTimestamp = null;
+		var stopTimer = null;
+		var recordCancel = false;
+		
+		var soundAlert = document.getElementById("sound-alert");
+		var audioTips = document.getElementById("audio-tips");
+		// 控制录音弹出框是否播放
+		var setSoundAlertVisable=function(show){
+			if(show){
+				soundAlert.style.display = 'block';
+				soundAlert.style.opacity = 1;
+			}else{
+				soundAlert.style.opacity = 0;
+				//  完成再真正隐藏
+				setTimeout(function(){
+					soundAlert.style.display = 'none';
+				},200);
+			}
+		};
+		
+      	mui.plusReady(function () {
+      		/**
+      		 * 录制语音文件转base64字符串
+      		 */
+      		// 按住录音（长按开始录音）
+      	    document.querySelector('#recorder').addEventListener('hold',function () {
+      	    	recordCancel = false;
+				if(stopTimer)clearTimeout(stopTimer);
+							
+				audioTips.innerHTML = "手指上划，取消发送";
+				soundAlert.classList.remove('rprogress-sigh');
+				setSoundAlertVisable(true);
+				
+				// 获取当前设备的录音对象
+      	        recorder = plus.audio.getRecorder();
+      	        startTimestamp = (new Date()).getTime();
+		      	recorder.record({
+		      		filename:"_doc/audio/"
+		      	}, function (path) {
+		      		if (recordCancel) return;
+					console.log("path:"+path);
+					Audio2dataURL(path);
+				}, function ( e ) {
+					mui.toast("录音出现异常: " + e.message );
+				});
+      	    })
+      	    
+      	    // 释放保存（松手保存）
+      	    document.querySelector('#recorder').addEventListener('release',function () {
+      	    	if (audioTips.classList.contains("cancel")) {
+					audioTips.classList.remove("cancel");
+					audioTips.innerHTML = "手指上划，取消发送";
+				}
+				// 判断录音时间
+				stopTimestamp = (new Date()).getTime();
+				if (stopTimestamp - startTimestamp < 800) {
+					audioTips.innerHTML = "录音时间太短";
+					soundAlert.classList.add('rprogress-sigh');
+					recordCancel = true;
+					stopTimer=setTimeout(function(){
+						setSoundAlertVisable(false);
+					},800);
+				}else{
+					setSoundAlertVisable(false);
+				}
+				recorder.stop();
+      	    })
+      	    
+      	    // 拖动屏幕（手指上划，取消发送）
+			document.body.addEventListener('drag', function(event) {
+				if (Math.abs(event.detail.deltaY) > 50) {
+					if (!recordCancel) {
+						recordCancel = true;
+						if (!audioTips.classList.contains("cancel")) {
+							audioTips.classList.add("cancel");
+						}
+						audioTips.innerHTML = "松开手指，取消发送";
+					}
+				} else {
+					if (recordCancel) {
+						recordCancel = false;
+						if (audioTips.classList.contains("cancel")) {
+							audioTips.classList.remove("cancel");
+						}
+						audioTips.innerHTML = "手指上划，取消发送";
+					}
+				}
+			}, false);
+      	    
+      	    /**
+      	     * base64字符串转成语音文件播放
+      	     */
+      	    document.querySelector('#player').addEventListener('tap',function () {
+      	        // 语音文件dataURI
+      	        var base64Str = 'data:audio/amr;base64,IyFBTVIKPJEXFr5meeHgAeev8AAAAIAAAAAAAAAAAAAAAAAAAAA8SHcklmZ54eAB57rwAAAAwAAAAAAAAAAAAAAAAAAAADxVAIi2Znnh4AHnz/AAAACAAAAAAAAAAAAAAAAAAAAAPEj5H5ZmeeHgAeeK8AAAAMAAAAAAAAAAAAAAAAAAAAA8CPlmkh3hIXBB58qREQnBLS2AJiaa8Vqa7gILj8G3gDxCdymROQIAABfzq88RwMhLefLr3vK3U6azfvq2nmHAPD72h50rSBEAHi+aAMR3ptW1FgXQIAf3RyrTkKRbVNA8RG5xjrpQA2Af58rpoypM11/kORggGJI0bKkO9aI3wDxEclqNTNoAgFMuupawKhLxonjKARrlXizd3p380vlAPEJoZ0PvUAFgHvfaQQNN2t5xEFKHP1urAHfDDXmGA4A8NHtpjqWEAOBSIPrEkpKP2HysXQprlqRKAXWT10+N0DyQY3GUbFABQB/vCmFBoBTVkGo8slIzg9wwUr/RvD3APAB7ZIjOyA5gH+fKwRKrZcdSOFwEx+Ze8g/wOCfNaAA8CARG6fxy/uA88Dp+Yugn8Wk/5KA9sbyxsvy/jRTRADwCDhY5+GPd4flQK/fVvOVSgXf7AIZEoon9+tA3MEDgPAgFpUn/9LXgzts6yb7dudC4IkGZo1Z5/90vmfbgtHA8Ag+dlgBn8EOE0UpIC35c9H+qChMrd7PFyCTBwv60MDwICD9OAGf64ePJOrcalLDNLS7ovC5JvE9mCWNelXgwPAIHy0yrH59Bj4BaI4qyP8Xt+4Qc4gfGkUBzQtfh3LA8CAhCQf2nxxQbKNpQLF/M/aPIom9Gf4PjhoHm3AlmsDwCBi1B89754PLEa2pTjxBEU2KJgXSHqNxALEnqcoJwPAQJp4nk7pfhyy+6FzAnVe2vj/kYCpudow+hkuBCaqA8BAmiWeAfXyGPLYu3hWWMRjRajOZDkCUUss+2yKJQ8DwCEDSRtU9O4fGHmmsTyCv60riXaHIP/Y0ae9yPV3LwPAgjnRnhh/yJYY0MUtwAMDpA4bxLil8Vor6diMJOFfA8Aj2jWeN28QH/hRTh60wbArI03gJuPTPDoL7SRUmskDzgSh4L5sctw9h1rQYDUMqwQW5eR+FuP9ZUE9iQQC2wPAhBlGnjYG0loy4EncjBPAPZExLaiekfQQ+6sJSh4IA8CFITYeZfZ6H9gbxPQBDr6vWF4k6J0ZOtHyzw2/vgYDwITbJp5kb0tKrRi2EWjYt8KSlbziAzEj+QA6Pv0ZswPARMDmHh++GFutEbMapR4XdZA1i03eV4A3TAoWH/WqA8CEAEYeN3aEPdjDt4rToGRiO0MRy7QkAWWFT0g4DoEDwIRAxh+J3hgc+Ma/1kshlSrWWKFIO1+QyfnfIiWsLQPAgiAmH+rB8B+4Nr5RddjHVBtf0SoHWEQSUCGLRgruA8AlILTgIXLMH7gXoyfRJg21YxPRQw5ig5Kx4Slkb2cDwIO75eDFR4wfDEGwOBYZ50KTm0PJ4LHYs4lPwT1iDwPAI2C0Ndrloh8VBq+t13NvJnBEP+W/HlAXR69mYDRiA8CEW2VgmNA0HwSmtAkCszS0MEkutOvmdBvYI6yKLkgA=='
+    			// 转成.amr文件播放
+ 				dataURL2Audio(base64Str, function(entry){
+ 					var toURL = entry.toURL();
+ 					// 播放音频
+		    	    playAudio(toURL);
+ 				})
+      	    })
+      	})
+      	
+      	/**
+		 * 播放音频
+		 * @param {Object} path
+		 */
+		function playAudio (path) {
+      		var player = plus.audio.createPlayer(path);
+			player.play(function(){
+				mui.toast("播放成功");
+			}, function(e) {
+				mui.toast("播放失败");
+			});	
+		}
+      	
+      	/**
+      	 * 录音语音文件转base64字符串
+      	 * @param {Object} path
+      	 */
+      	function Audio2dataURL (path) {
+      		plus.io.resolveLocalFileSystemURL(path, function(entry){
+      			entry.file(function(file){
+      				var reader = new plus.io.FileReader();
+      				reader.onloadend = function (e) {
+      					console.log(e.target.result);
+      				};
+      				reader.readAsDataURL(file);
+       			},function(e){
+       				mui.toast("读写出现异常: " + e.message );
+       			})
+      		})
+      	}
+      	
+      	/**
+		 * base64字符串转成语音文件(参考http://ask.dcloud.net.cn/question/16935)
+		 * @param {Object} base64Str
+		 * @param {Object} callback
+		 */
+		function dataURL2Audio (base64Str, callback) {
+			var base64Str = base64Str.replace('data:audio/amr;base64,','');
+			var audioName = (new Date()).valueOf() + '.amr';
+			
+			plus.io.requestFileSystem(plus.io.PRIVATE_DOC,function(fs){
+    			fs.root.getFile(audioName,{create:true},function(entry){
+    				// 获得平台绝对路径
+    				var fullPath = entry.fullPath;
+	    			if(mui.os.android){  
+		    			// 读取音频
+	    	            var Base64 = plus.android.importClass("android.util.Base64");
+	    	            var FileOutputStream = plus.android.importClass("java.io.FileOutputStream");
+	    	            try{
+	    		            var out = new FileOutputStream(fullPath);
+	    	                var bytes = Base64.decode(base64Str, Base64.DEFAULT);
+	    	                out.write(bytes); 
+	    	                out.close();
+	    	                // 回调
+	    	                callback && callback(entry);
+	            		}catch(e){
+	              			console.log(e.message);
+	            		}
+	            	}else if(mui.os.ios){
+	    	    		var NSData = plus.ios.importClass('NSData');
+						var nsData = new NSData();
+						nsData = nsData.initWithBase64EncodedStringoptions(base64Str,0);
+						if (nsData) {
+						    nsData.plusCallMethod({writeToFile: fullPath,atomically:true});
+						    plus.ios.deleteObject(nsData);
+						}
+						// 回调
+	    	      		callback && callback(entry);
+	            	}
+	    		})
+    		})
+		}
+    </script>
+</body>
+</html>
