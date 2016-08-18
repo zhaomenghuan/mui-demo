@@ -76,6 +76,7 @@
       	        recorder = plus.audio.getRecorder();
       	        startTimestamp = (new Date()).getTime();
 		      	recorder.record({
+		      		format:"amr",
 		      		filename:"_doc/audio/"
 		      	}, function (path) {
 		      		if (recordCancel) return;
