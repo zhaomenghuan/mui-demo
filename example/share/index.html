@@ -133,7 +133,7 @@
                 if (~share.id.indexOf('weibo')) {
                     msg.content += "；体验地址：http://www.dcloud.io/hellomui/";
                 }
-                msg.thumbs = ["_www/images/logo.png"];
+                msg.thumbs = ["_www/img/logo.png"];
                 share.send(msg, function() {
                     mui.toast("分享到\"" + share.description + "\"成功！ ");
                 }, function(e) {
