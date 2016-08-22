@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+	    <div class="mui-content mui-content-padded">        
+	        <h2 class="mui-subtitle">颜色：</h2>
+	        <!--badge（数字角标）-->
+	        <div class="mui-content-padded">
+	        	<span class="mui-badge">1</span>
+                <span class="mui-badge mui-badge-primary">12</span>
+                <span class="mui-badge mui-badge-success">123</span>
+                <span class="mui-badge mui-badge-warning">3</span>
+                <span class="mui-badge mui-badge-danger">45</span>
+                <span class="mui-badge mui-badge-royal">456</span>
+	        </div>
+	        <!--button（按钮）-->
+            <div class="mui-content-padded">
+                <button type="button" class="mui-btn">默认</button>
+                <button type="button" class="mui-btn mui-btn-primary">蓝色</button>
+                <button type="button" class="mui-btn mui-btn-success">绿色</button>
+                <button type="button" class="mui-btn mui-btn-warning">黄色</button>
+                <button type="button" class="mui-btn mui-btn-danger">红色</button>
+                <button type="button" class="mui-btn mui-btn-royal">紫色</button>
+            </div>
+            <!--switch(开关)-->
+            <div class="mui-content-padded">
+                <div class="mui-switch mui-active">
+                  <div class="mui-switch-handle"></div>
+                </div>
+                <div class="mui-switch mui-switch-blue mui-active">
+                  <div class="mui-switch-handle"></div>
+                </div>
+            </div>
+            <!--任意元素-->
+            <div class="mui-content-padded">
+                <div class="mui-bg-primary">我是蓝色背景</div>
+                <div class="mui-bg-positive">我是绿色背景</div>
+                <div class="mui-bg-negative">我是红色背景</div>
+	        </div>
+	       
+	        <h2 class="mui-subtitle">文字：</h2>
+	        <!--文字位置-->
+	        <div class="mui-content-padded">
+	            <div class="mui-text-left">我在左边</div>
+                <div class="mui-text-center">我在中间</div>
+                <div class="mui-text-right">我在右边</div>
+            </div>
+            <!--  溢出隐藏-->
+            <label>单行：</label>
+            <p class="mui-ellipsis">我在一行内，当我超出了会显示省略号。我在一行内，当我超出了会显示省略号。我在一行内，当我超出了会显示省略号。我在一行内，当我超出了会显示省略号。</p>
+            <label>多行：</label>
+            <p class="mui-ellipsis-2">我在两行内，当我超出了会显示省略号。我在两行内，当我超出了会显示省略号。我在两行内，当我超出了会显示省略号。我在两行内，当我超出了会显示省略号。我在两行内，当我超出了会显示省略号。</p>
+	        <label>多行：</label>
+            <p class="mui-ellipsis-2" style="-webkit-line-clamp:3">我在三行内，当我超出了会显示省略号。我在三行内，当我超出了会显示省略号。我在三行内，当我超出了会显示省略号。我在三行内，当我超出了会显示省略号。我在三行内，当我超出了会显示省略号。我在三行内，当我超出了会显示省略号。</p> 
+	         
+	        <h2 class="mui-subtitle">布局：</h2>
+	        <!--行内-->
+	        <label>设置元素为内联块对象：</label>
+	        <div class="mui-content-padded">
+	        	<div class="mui-inline">我是A</div>
+                <div class="mui-inline">我是B</div>
+                <div class="mui-inline">我是C</div>
+	        </div>
+            <!--浮动-->
+            <label>浮动：</label>
+            <div class="mui-clearfix">
+            	<div class="mui-pull-left">我在左边</div>
+                <div class="mui-pull-right">我在右边</div>
+            </div>
+            <!--块级表格-->
+            <label>块级表格</label>
+            <div class="mui-table">
+            	<div class="mui-table-cell mui-text-center">
+            	       我是A
+            	</div>
+            	<div class="mui-table-cell mui-text-center">
+            	       我是B
+                </div>
+                <div class="mui-table-cell mui-text-center">
+                                   我是C
+                </div>
+            </div>
+            
+                                    列表去掉默认样式：
+            <ul class="mui-list-unstyled">
+            	<li>我是第1条</li>
+            	<li>我是第2条</li>
+            	<li>我是第3条</li>
+            </ul>
+                                     列表显示为行内：
+            <ul class="mui-list-inline">
+                <li>我是第1条</li>
+                <li>我是第2条</li>
+                <li>我是第3条</li>
+            </ul>
+	    </div>
+	    
+	    <script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+
+	</body>
+</html>

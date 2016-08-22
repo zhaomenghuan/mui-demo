@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="css/mui.min.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <button id="btn" type="button" class="mui-btn mui-btn-blue mui-btn-block">按钮</button>
+        
+        <script src="js/mui.min.js"></script>
+        <script src="js/mui.jsonp.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+            mui.init()
+            // http://fanyi.youdao.com/openapi.do?keyfrom=xqnblog&key=1828999753&type=data&doctype=json&version=1.1&q=good
+            
+            var url = 'http://fanyi.youdao.com/openapi.do?keyfrom=xqnblog&key=1828999753&callback=?'
+            document.querySelector('#btn').addEventListener('click',function () {
+                mui.getJSON(url,{
+                    only:"translate",
+                    type:"data",
+                    doctype:"jsonp",
+                    version:"1.1",
+                    q: 'good'
+                },function(rs){
+                    console.log("res:"+JSON.stringify(rs));
+                });     
+            })
+        </script>
+    </body>
+
+</html>

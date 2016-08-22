@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+			.filePicker{
+				width: 160px;
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+				color: #fff;
+				background: #00b7ee;		
+			}
+			.filePicker input[type="file"] {
+				position: relative;
+				top: -44px;
+				left: 0px;
+				width: 160px;
+				height: 44px;
+				opacity: 0;
+				cursor: pointer;
+				overflow: hidden;
+				z-index: 0;
+			}
+			
+			.container{
+				width: 160px;
+				margin: 30px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<input type="file" name="" id="" value="" />
+		</div>	
+		
+		<div class="container">
+			<div class="filePicker">
+				<label>点击选择文件</label>
+				<input id="fileInput" type="file" name="file" accept="image/*">
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			var fileInput = document.getElementById("fileInput");
+			fileInput.addEventListener('change', function(event) {
+				var file = fileInput.files[0];
+				if (file) {				
+					var reader = new FileReader();
+					reader.onload = function() {
+						console.log(this.result);
+					}
+					reader.readAsDataURL(file);
+				}
+			}, false);
+			
+			/**
+			 * 读文件大小
+			 * @param {Object} file
+			 */
+			function readFileSize(file){
+				var size = file.size / 1024;
+				var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+				
+				var fileSizeString = '';
+				for(var i = 0; size > 1; size /= 1024, i++) {
+				   fileSizeString = size.toFixed(2) + " " + aMultiples[i];
+				}
+				return fileSizeString;
+			}
+		</script>
+	</body>
+</html>
