@@ -138,6 +138,8 @@
     			// 转成.amr文件播放
  				dataURL2Audio(base64Str, function(entry){
  					var toURL = entry.toURL();
+ 					console.log("toURL:"+toURL);
+ 					
  					// 播放音频
 		    	    playAudio(toURL);
  				})
