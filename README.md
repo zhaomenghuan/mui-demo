@@ -13,6 +13,7 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - screenshot：文件夹下存放demo截图
 - mui系列教程源码：文件夹下存放教程源码
 - doc：文件夹下存放一下技巧和细节
+- faq：文件夹存放常见问题
 
 ## demo列表（example文件夹下）
 
