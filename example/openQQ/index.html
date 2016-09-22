@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>openQQ</title>
+	<link rel="stylesheet" type="text/css" href="css/mui.css"/>
+	</head>
+	<body>
+		
+		<div class="mui-content mui-content-padded">
+		    <button id="show" type="button" class="mui-btn mui-btn-blue mui-btn-block">按钮</button>
+		</div>
+		
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var os = {
+			    android: false,
+			    ios: false,
+			    plus: false,
+			    stream: false,
+			    qihoo: false,
+			    wkwebview: false
+			};
+			var ua = navigator.userAgent;
+			if (ua.match(/(Android);?[\s\/]+([\d.]+)?/)) {
+			    os.android = true;
+			} else if (ua.match(/(iPhone\sOS)\s([\d_]+)/)) {
+			    os.ios = true;
+			    if (window.webkit && window.webkit.messageHandlers) {
+			        os.wkwebview = true;
+			    }
+			}
+			if (ua.match(/Html5Plus/i)) {
+			    os.plus = true;
+			    if (ua.match(/StreamApp/i)) {
+			        os.stream = true;
+			        if (ua.match(/Qihoo/i)) {
+			            os.qihoo = true;
+			        }
+			    }
+			}
+			
+			var openQQ = function(qq) {
+				var url = null;
+				if (os.android) {
+					url = "mqqwpa://im/chat?chat_type=wpa&uin="+qq;
+					if(os.plus){
+						plus.runtime.openURL(url,function(e) {
+	                        plus.nativeUI.confirm("检查到您未安装QQ，请先到应用商店搜索下载？", function(i) {
+	                            if (i.index == 0) {
+	                                androidMarket("com.tencent.mobileqq");
+	                            }
+	                        });
+	                    });
+					}else{
+						var el = document.createElement("a");
+						el.href = url;
+						document.body.appendChild(el);
+						
+						var evt = document.createEvent("HTMLEvents");
+						evt.initEvent("click", false, false);
+						el.dispatchEvent(evt);
+					}
+				} else if (os.ios) {
+					url = "mqq://im/chat?chat_type=wpa&uin="+qq+"&version=1&src_type=web";
+					if(os.plus){
+						plus.runtime.openURL(url,function(e) {
+	                        plus.nativeUI.confirm("检查到您未安装qq，请先到appstore搜索下载？", function(i) {
+	                            if (i.index == 0) {
+	                                iosAppstore("itunes.apple.com/cn/app/mqq/");
+	                            }
+	                        });
+	                    });
+	               	}else{
+	               		var el = document.createElement("a");
+						el.href = url;
+						document.body.appendChild(el);
+						
+						var evt = document.createEvent("HTMLEvents");
+						evt.initEvent("click", false, false);
+						el.dispatchEvent(evt);
+	               	}
+				}
+			}
+		
+			document.querySelector('#show').addEventListener('tap',function () {
+				openQQ('1028317108');
+			})
+		</script>
+	</body>
+</html>
+	
