@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -8,6 +7,7 @@
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<style type="text/css">
 			.mui-popover{
+				display: none;
 				position: fixed;
 				width: 80%;
 				height: auto;
@@ -28,7 +28,7 @@
 		</style>
 	</head>
 
-	<body>	
+	<body>
 		<div id="pop" class="mui-popover">
 			<ul class="mui-table-view">
 		    	<li class="mui-table-view-cell"><a href="#">Item1</a></li>
@@ -38,27 +38,24 @@
 		    	<li class="mui-table-view-cell"><a href="#">Item5</a></li>
 		    </ul>
 		</div>
-
-		<button id="openPopover" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开弹出菜单</button>
 		
-		<script src="js/mui.min.js"></script>
-		<script type="text/javascript">	
-			var pop = document.getElementById("pop");
-			var mask = mui.createMask(function(){
-				pop.classList.remove('mui-active');
-			});
-			
-			// 显示
-			mui('#openPopover')[0].addEventListener('tap',function(){
-				mask.show();//显示遮罩
-				pop.classList.add('mui-active');
+		<div class="mui-content mui-content-padded">
+		    <button id="openPopover" type="button" class="mui-btn mui-btn-blue mui-btn-block">打开弹出菜单</button>
+		</div>
+		
+		<script src="./js/mui.js"></script>
+		<script src="./js/popover.js"></script>
+		<script type="text/javascript">		
+			var pop = new popover('#pop');
+			document.querySelector('#openPopover').addEventListener('tap',function () {
+			    pop.open();
 			})
 			
-			// 点击列表
-			mui('.mui-popover .mui-table-view').on('tap','li',function(){
-				pop.classList.remove('mui-active');
-				mask.close();
-			})
+			mui('.mui-table-view').on('tap','li a',function(){
+			  	mui.toast(this.innerHTML);
+			  	pop.close();
+			}) 
 		</script>
 	</body>
+
 </html>

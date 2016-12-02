@@ -17,12 +17,12 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 
 ## demo列表（example文件夹下）
 
-- [easemobIM](https://rawgit.com/zhaomenghuan/mui-demo/master/example/easemobIM/index.html)：环信webim的demo
+- [easemobIM](./example/easemobIM/index.html)：环信webim的demo
 - [tabbar-div-animation](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-div-animation/index.html)：div模式带动画切换的选项卡
 - [tabbar-with-popover](https://rawgit.com/zhaomenghuan/mui-demo/master/example/tabbar-with-popover/main.html)：解决弹出层被遮挡的问题
 - [timeline](https://rawgit.com/zhaomenghuan/mui-demo/master/example/timeline/timeline.html)：时间轴效果
 - [numberbox](https://rawgit.com/zhaomenghuan/mui-demo/master/example/numberbox/index.html)：倍率为2的范围可控的数字增减器
-- [popover-control-byjs](https://rawgit.com/zhaomenghuan/mui-demo/master/example/popover-control-byjs/index.html)：js控制的popover
+- [popover](https://rawgit.com/zhaomenghuan/mui-demo/master/example/popover/index.html)：基于mui.popover的自定义弹出层
 - [slider](https://rawgit.com/zhaomenghuan/mui-demo/master/example/slider/index.html)：加载网络图片的图片轮播
 - [share](https://rawgit.com/zhaomenghuan/mui-demo/master/example/share/index.html)：使用图片打开分享
 - [piker](https://rawgit.com/zhaomenghuan/mui-demo/master/example/piker/index.html)：选择器
@@ -40,5 +40,5 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [oauth](https://rawgit.com/zhaomenghuan/mui-demo/master/example/oauth/index.html)：判断本地是否安装客户端,进行第三方登录
 - [Audio](https://rawgit.com/zhaomenghuan/mui-demo/master/example/Audio/index.html)：录音转dataURI,dataURI转语音文件播放
 - [jsonp](https://rawgit.com/zhaomenghuan/mui-demo/master/example/jsonp/index.html)：mui使用jsonp的演示例子
-- [openQQ](https://rawgit.com/zhaomenghuan/mui-demo/master/example/openQQ/index.html)：调用qq会话
-- [broswer](./example/jsonp/index.html)：浏览器加载网页的简单模型
+- [openQQ](./example/openQQ/index.html)：调用qq会话
+- [broswer](./example/broswer/index.html)：浏览器加载网页的简单模型
