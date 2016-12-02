@@ -40,4 +40,5 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [oauth](https://rawgit.com/zhaomenghuan/mui-demo/master/example/oauth/index.html)：判断本地是否安装客户端,进行第三方登录
 - [Audio](https://rawgit.com/zhaomenghuan/mui-demo/master/example/Audio/index.html)：录音转dataURI,dataURI转语音文件播放
 - [jsonp](https://rawgit.com/zhaomenghuan/mui-demo/master/example/jsonp/index.html)：mui使用jsonp的演示例子
+- [openQQ](https://rawgit.com/zhaomenghuan/mui-demo/master/example/openQQ/index.html)：调用qq会话
 - [broswer](./example/jsonp/index.html)：浏览器加载网页的简单模型
