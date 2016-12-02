@@ -1,0 +1,15 @@
+html,
+body,
+.mui-content{
+	font-family: "PingFangSC-Regular","microsoft yahei";
+	background-color: #efeff4;
+}
+header.mui-bar-nav{
+	background-color: #ff4900;
+	box-shadow: none;
+}
+header.mui-bar-nav a,
+header.mui-bar-nav button,
+header.mui-bar-nav .mui-title{
+	color: #ffffff !important;
+}

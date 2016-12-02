@@ -1,0 +1,12 @@
+{
+	"index.html": {
+		"resources": [
+			"js/browser.js",
+			"js/progressbar.js",
+			"css/progressbar.css",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"css/app.css"
+		]
+	}
+}
