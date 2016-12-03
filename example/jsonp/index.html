@@ -14,14 +14,14 @@
         </div>
         
         <script src="js/mui.min.js"></script>
-        <script src="js/mui.jsonp.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/mui.jsonp.js"></script>
         <script type="text/javascript">
             mui.init()
             /**
              * http://fanyi.youdao.com/openapi.do?keyfrom=xqnblog&key=1828999753&type=data&doctype=json&version=1.1&q=good
              */          
             var url = 'http://fanyi.youdao.com/openapi.do?callback=?'
-            document.querySelector('#btn').addEventListener('click',function () {
+            document.querySelector('#btn').addEventListener('tap',function () {
                 mui.getJSON(url,{
                 	keyfrom: "xqnblog",
                 	key: "1828999753",
@@ -30,7 +30,7 @@
                     version: "1.1",
                     q: 'good'
                 },function(rs){
-                    console.log("res:"+JSON.stringify(rs));
+                    mui.toast("res:"+JSON.stringify(rs));
                 });     
             })
         </script>
