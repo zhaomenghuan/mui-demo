@@ -1,6 +1,10 @@
 # mui-demo
 
-mui——最接近原生APP体验的高性能前端框架，是基于html5plus(简称5+或html5+)的一个UI框架。[【MUI从入门到精通】](https://segmentfault.com/blog/mui) —— [小青年](http://zhaomenghuan.github.io/)
+mui——最接近原生APP体验的高性能前端框架，是基于html5plus(简称5+或html5+)的一个UI框架。
+
+[mui官网](http://dev.dcloud.net.cn/mui/)
+
+[MUI从入门到精通](https://segmentfault.com/blog/mui) —— [小青年](http://zhaomenghuan.github.io/)
 
 ## 说明
 本仓库会收集mui一系列demo，欢迎各位fork and push。
@@ -15,7 +19,7 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - doc：文件夹下存放一下技巧和细节
 - faq：文件夹存放常见问题
 
-## demo列表（example文件夹下）
+## demo列表
 
 - [audio](./example/audio/index.html)：录音转dataURI,dataURI转语音文件播放
 - [broswer](./example/broswer/index.html)：浏览器加载网页的简单模型
@@ -45,7 +49,9 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 
 ## 参与贡献
 
-如果你也想参与进来分享其他的例子，你可以自己建立仓库自己维护然后将地址发给我，也可以将内容分享给我进行整理，详情可以qq联系，qq:1029317108。
+如果你也想参与进来分享其他的例子，你可以自己建立仓库自己维护然后将地址发给我，也可以将内容分享给我进行整理，详情可以通过邮件联系我，Emaile: 1029317108@qq.com。
+
+更多精彩内容请访问DCloud官网（http://www.dcloud.io/
 
 
 
