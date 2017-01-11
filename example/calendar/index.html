@@ -10,9 +10,9 @@
 	<script src="js/calendar.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		var cld = new Calendar({
-			el: '#box',
+			el: 'body',
 			value: '', // 默认为new Date();
-			fn: function(obj) {
+			callback: function(obj) {
 				console.log(JSON.stringify(obj));
 			}
 		})

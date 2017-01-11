@@ -3,7 +3,6 @@
 		// 创建日历控件基本结构	
 		var cldbox = document.createElement("div");
 		cldbox.className = 'calendar-container';
-		cldbox.id = opt.el;
 		var tpl = "";
 		tpl += '<div class="calendar-title">';
 		tpl += '<div class="calendar-prevyear"><<</div>';
@@ -16,7 +15,7 @@
 		tpl += '<div class="calendar-week"><div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div></div>';
 		tpl += '<div class="calendar-content clearfix"></div>';
 		cldbox.innerHTML=tpl;
-		document.body.appendChild(cldbox);
+		document.querySelector(opt.el).appendChild(cldbox);
 		
 		// dom 对象
 		var omonth = cldbox.querySelector(".calendar-month");
@@ -59,7 +58,7 @@
 				var day = event.target.innerHTML;
 				var dateObj = new Date(year, month-1, day);
 				var week = getWeek(dateObj);	
-				opt.fn({
+				opt.callback({
 					'year': year,
 					'month': month,
 					'day': day,
@@ -108,8 +107,9 @@
 			clearContent(content);
 			fistWeek = getCurmonWeeknum(dateObj);
 			monDaynum = getCurmonDaynum(dateObj);
-			nowDay = getDay(dateObj);
-			setContent(content, fistWeek, monDaynum,nowDay);  
+			// nowDay = getDay(dateObj);
+			console.log(nowDay);
+			setContent(content, fistWeek, monDaynum, 1);  
 		})
 		
 		// 上一年
