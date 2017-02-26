@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/cropper.min.css" />
+		<link rel="stylesheet" href="css/mui.cropper.css"/ >
+		<style>
+			.avatar img{
+				width: 150px;
+				display: block;
+				margin: 20px auto;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">裁剪图像</h1>
+		</header>
+		<div class="mui-content">
+			<div class="avatar">
+	            <a href="#cropper-sheet">
+	            	<img id="avatar" src="img/addHeadIcon.png"/>
+	            </a>
+	       	</div>
+			
+			<!--选择头像-->
+			<div id="cropper-sheet" class="mui-popover mui-popover-bottom mui-popover-action">
+			    <!-- 可选择菜单 -->
+			    <ul class="mui-table-view">
+			      	<li class="mui-table-view-cell">
+			        	<a data-type="camera">拍照</a>
+			      	</li>
+			      	<li class="mui-table-view-cell">
+			        	<a data-type="gallery">选择相册</a>
+			      	</li>
+			    </ul>
+			    <!-- 取消菜单 -->
+			    <ul class="mui-table-view">
+			      	<li class="mui-table-view-cell">
+			        	<a href="#cropper-sheet"><b style="color: #ff0000;">取消</b></a>
+			      	</li>
+			    </ul>
+			</div>	
+			
+			<div class="mui-cropper-modal mui-modal">
+				<div class="cropper-image-container">
+					<img id="image" src="" />
+				</div>
+				<div class="cropper-btn-group">
+					<span class="cropper-cancel">取消</span>
+					<span class="cropper-ok">裁剪</span>
+				</div>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/cropper.min.js"></script>
+		<script src="js/mui.cropper.js"></script>
+		<script type="text/javascript">
+			mui('#cropper-sheet').on('tap','.mui-table-view-cell > a',function(){
+				var type = this.getAttribute('data-type');
+				switch (type){
+					case 'camera':
+						mui.captureImage(function(path){
+							var fullPath = mui.getLocalFileURL(path);
+							handleInit(fullPath);
+						})
+						break;
+					case 'gallery':
+						mui.pickGallery(function(path){
+							handleInit(path);
+						})
+						break;
+					default:
+						break;
+				}
+			}) 
+			
+			function handleInit(path){
+				mui('#cropper-sheet').popover('toggle');
+				mui.cropper.show(path, function(data){
+					mui.saveImage(data, '_doc/cropper.jpg', function(path){
+						console.log(path);
+						document.getElementById("avatar").src = path;
+					})
+				});
+			}
+		</script>
+	</body>
+</html> 

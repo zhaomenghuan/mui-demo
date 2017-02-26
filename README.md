@@ -46,6 +46,8 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [template](./example/template/index.html)：模板页面实现原理
 - [timeline](https://rawgit.com/zhaomenghuan/mui-demo/master/example/timeline/timeline.html)：时间轴效果
 - [vue-mui](https://rawgit.com/zhaomenghuan/mui-demo/master/example/vue-mui/index.html)：基于Vue.js的mui tabbar演示例子
+- [tts-param](./example/tts-param/index.html):语音合成参数设置
+- [cropper](./example/cropper/index.html):头像裁剪的例子
 
 ## 参与贡献
 

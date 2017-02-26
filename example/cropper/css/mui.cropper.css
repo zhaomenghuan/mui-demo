@@ -1,0 +1,33 @@
+.cropper-image-container {
+	z-index: 5009;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.5);
+}
+.cropper-image-container > img {
+	max-width: 100%;
+} 
+.cropper-btn-group{
+    display: block;
+    z-index: 5010;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    bottom: 15px;
+    color: #fff;
+    text-align: center;
+}
+.cropper-btn-group span {
+	display: inline-block;
+ 	padding: 10px 30px;
+	background: #2b89e8;
+	border-radius: 5px;
+}
+.cropper-cancel {
+    margin-right: 30px;
+    background: #ccc !important;
+}

@@ -1,0 +1,17 @@
+{
+	"index.html": {
+		"resources": [
+			"css/cropper.min.css",
+			"img/addHeadIcon.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/cropper-page.js",
+			"js/cropper.min.js",
+			"css/cropper-page.css",
+			"css/cropper-page.css/",
+			"js/jquery-1.11.0.js",
+			"css/mui.cropper.css",
+			"js/mui.cropper.js"
+		]
+	}
+}

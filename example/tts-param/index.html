@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="css/mui.min.css" rel="stylesheet" />
+        <style type="text/css">
+            .text{
+                margin: 10px;
+                background-color: #eee;
+                padding: 5px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="mui-bar mui-bar-nav">
+            <h1 class="mui-title">语音合成</h1>
+        </header>
+        <div class="mui-content mui-content-padded">
+            <div class="text">Perhaps every program has a dream of changing the world, perhaps to the end we can only change our own. We are good for the division, we are eager to become Daniel is looking up, we love to share, because the program ape this enthusiasm, the overall social technology more and more mature, open source to change the world, but also change this procedure ape. I am not a big god, I just want to quietly do something meaningful.</div>
+            <button id="btn" type="button" class="mui-btn mui-btn-block">开始合成</button>
+        </div>
+        <script src="js/mui.min.js"></script>
+        <script type="text/javascript">
+            mui.init();
+
+            mui.plusReady(function () {
+                var main = plus.android.runtimeMainActivity();
+                var SpeechUtility = plus.android.importClass('com.iflytek.cloud.SpeechUtility');
+                var SpeechConstant = plus.android.importClass('com.iflytek.cloud.SpeechConstant');
+                SpeechUtility.createUtility(main,"appid=H52A639CD");
+
+                var SynthesizerPlayer = plus.android.importClass('com.iflytek.cloud.SpeechSynthesizer');
+                var mTts = SynthesizerPlayer.createSynthesizer(main, null); 
+                mTts.setParameter(SpeechConstant.VOICE_NAME, "catherine");//设置发音人
+                mTts.setParameter(SpeechConstant.SPEED, "50");//设置语速  
+                mTts.setParameter(SpeechConstant.VOLUME, "80");//设置音量，范围0~100  
+                mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端  
+
+                document.querySelector('#btn').addEventListener('tap',function () {
+                    var text = document.querySelector(".text").innerHTML;
+                    mTts.startSpeaking(text,null);
+                })
+            })
+        </script>
+    </body>
+</html>
