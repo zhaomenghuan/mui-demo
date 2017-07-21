@@ -1,16 +1,10 @@
 # mui-demo
 
-mui——最接近原生APP体验的高性能前端框架，是基于html5plus(简称5+或html5+)的一个UI框架。
-
-[mui官网](http://dev.dcloud.net.cn/mui/)
-
-[MUI从入门到精通](https://segmentfault.com/blog/mui) —— [小青年](http://zhaomenghuan.github.io/)
+[mui](http://dev.dcloud.net.cn/mui/)——最接近原生APP体验的高性能前端框架，是基于html5plus(简称5+或html5+)的一个UI框架。
 
 ## 说明
-本仓库会收集mui一系列demo，欢迎各位fork and push。
 
-- 专栏地址：https://segmentfault.com/blog/mui
-- demo地址：https://github.com/zhaomenghuan/mui-demo.git
+本仓库会收集mui系列demo，欢迎各位fork and push。
 
 内容分类说明：
 - example：文件夹下存放mui相关demo
@@ -18,6 +12,26 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - mui系列教程源码：文件夹下存放教程源码
 - doc：文件夹下存放一下技巧和细节
 - faq：文件夹存放常见问题
+
+## 博客教程
+
+[MUI从入门到精通](https://segmentfault.com/blog/zhaomenghuan)系列文章：
+
+- [mui初级入门教程（一）— 小白入手mui的学习路线](https://segmentfault.com/a/1190000005173713)
+- [mui初级入门教程（二）— html5+ webview 底部栏用法详解](https://segmentfault.com/a/1190000005340854)
+- [mui初级入门教程（三）— html5+ XMLHttpRequest 与mui ajax用法详解](https://segmentfault.com/a/1190000005589813)
+- [mui初级入门教程（四）— 再谈webview，从小白变“大神”！](https://segmentfault.com/a/1190000005651279) 
+- [mui初级入门教程（五）— 聊聊即时通讯（IM），基于环信 web im SDK](https://segmentfault.com/a/1190000005729743)
+- [mui初级入门教程（六）— 模板页面实现原理及多端适配指南](https://segmentfault.com/a/1190000006077506)
+- [mui初级入门教程（七）— 基于native.js的文件系统管理功能实现](https://segmentfault.com/a/1190000006149212)
+- [HTML5+ APP页面传参详解](http://ask.dcloud.net.cn/article/795)
+- [mui组件通用CSS类](http://ask.dcloud.net.cn/article/818)
+- [录音文件与Base64编码相互转换的方法](http://ask.dcloud.net.cn/article/841)
+
+## 视频讲座
+
+- [html5+ App开发工程化实践之路](https://segmentfault.com/l/1500000009542402?r=bPqXdU)
+- [html5+ App开发之 Android 平台离线集成 5+ SDK](https://segmentfault.com/l/1500000010042078?r=bPqXdU)
 
 ## demo列表
 
@@ -46,8 +60,28 @@ mui——最接近原生APP体验的高性能前端框架，是基于html5plus(�
 - [template](./example/template/index.html)：模板页面实现原理
 - [timeline](https://rawgit.com/zhaomenghuan/mui-demo/master/example/timeline/timeline.html)：时间轴效果
 - [vue-mui](https://rawgit.com/zhaomenghuan/mui-demo/master/example/vue-mui/index.html)：基于Vue.js的mui tabbar演示例子
-- [tts-param](./example/tts-param/index.html):语音合成参数设置
-- [cropper](./example/cropper/index.html):头像裁剪的例子
+- [tts-param](./example/tts-param/index.html)：语音合成参数设置
+- [cropper](./example/cropper/index.html)：头像裁剪的例子
+- [blueTooth](./example/blueTooth/index.html)：蓝牙的例子，来自网友[佑佑](http://ask.dcloud.net.cn/article/12587)
+
+## faq 列表
+
+- 1.如何获取文件的数据
+- 2.打开系统wifi设置页面
+- 3.沉浸式状态栏设置方法
+- 4.上拉刷新下拉加载的启用禁止方法
+- 5.如何设置相片分辨率
+- 6.如何获取手机应用列表
+- 7.可折叠列表的两个问题
+- 8.5+webview与android原生Activity
+- 9.获取APP系统权限和打开权限设置
+- 10.录音文件与Base64编码相互转换的方法
+- 11.nativejs调用android原生文件管理
+
+## 赞赏
+
+整理这些demo和例子，花费了不少时间精力，如果觉得对你有用，不妨赞赏一下：
+![](https://segmentfault.com/img/bVxRdQ?w=612&h=384)
 
 ## 参与贡献
 

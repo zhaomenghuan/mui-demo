@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			.blue-bot {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+			
+			.blue-time {
+				background-color: #999;
+				color: #fff;
+				border-radius: 8px;
+				width: 50%;
+				margin: 10px auto;
+				padding: 10px 0;
+				text-align: center;
+				line-height: 30px;
+			}
+			
+			.blue-det-time {
+				font-size: 28px;
+			}
+			
+			.blue-fon {
+				font-size: 18px;
+			}
+			
+			.blue-state {
+				width: 100%;
+				background-color: #999;
+				color: #fff;
+				text-align: center;
+				padding: 15px 0;
+			}
+			
+			.blue-state-det {
+				overflow: hidden;
+				width: 72%;
+				margin: 0 auto;
+				padding: 10px 0;
+				text-align: center;
+			}
+			
+			.det,
+			.work {
+				float: left;
+				margin-left: 18px;
+			}
+			
+			.blue-btn {
+				overflow: hidden;
+				width: 73%;
+				margin: 20px auto;
+			}
+			
+			.blue-btn button {
+				border: none;
+				color: #fff;
+				background-color: inherit;
+				font-size: 24px;
+			}
+			
+			.blue-start {
+				float: left;
+				margin-left: 15px;
+			}
+			
+			.blue-finsh {
+				float: right;
+			}
+			
+			.blue-apply-com {
+				background-color: #22A4F2;
+				color: #fff;
+				overflow: hidden;
+				/*padding: 10px 0;*/
+			}
+			
+			.blue-apply-com button {
+				border: none;
+				color: #fff;
+				background-color: inherit;
+				font-size: 24px;
+				padding: 10px 0;
+			}
+			
+			button.blue-apply {
+				border-right: 1px solid #fff;
+			}
+			
+			.blue-apply,
+			.blue-com {
+				float: left;
+				width: 50%;
+			}
+			.item .left{
+				float: left;
+			}
+			.item .right{
+				float: right;
+			}
+			.item{
+				clear: both;
+			}
+			.rotate{
+				animation: rotateImg 2s linear infinite;
+				-webkit-animation:rotateImg 2s linear infinite;
+			}
+			@keyframes rotateImg {
+				0% {transform : rotate(0deg);}
+				100% {transform : rotate(360deg);}
+			}
+
+			@-webkit-keyframes rotateImg {
+			    0%{-webkit-transform : rotate(0deg);}
+			    100%{-webkit-transform : rotate(360deg);}
+			}
+		</style>
+		
+	</head>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery-1.11.0.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			gestureConfig:{
+			tap: true, //默认为true
+			doubletap: true, //默认为false
+			longtap: true, //默认为false
+			swipe: true, //默认为true
+			drag: true, //默认为true
+			hold:false,//默认为false，不监听
+			release:false//默认为false，不监听
+			}
+		});
+		
+		/**
+		 * 扫描按钮 旋转动画
+		 */
+		function rotate() {
+			$ (function() {
+			  	if ($('#rotateImg').hasClass('rotate')) {
+			  		$('#rotateImg').removeClass('rotate');
+			  	} else {
+			  		$('#rotateImg').addClass('rotate');
+			  	}
+			});
+		}
+		
+		// 监听plusready事件  一进入该页面初始化
+		document.addEventListener("plusready", function(){
+			initBluetooth();
+		}, false );
+		
+		var bluetoothAdapter;                                       // BLE蓝牙适配器
+		var activity;                                               // 当前Activity实例
+		var STATE_DISCONNECTED = 0;                                 // 状态 断开连接
+		var STATE_CONNECTED = 1;                                    // 状态 连接中
+		var mConnectionState = STATE_DISCONNECTED;                  // 当前连接状态变量
+		var isScan = false;                                         // 当前搜索状态 默认为不在搜索
+		var timer;													// 定时器
+		var leScanCallback;											// 扫描适配器
+		var listArr = [];											// 设备数组
+		var list = '';												// innerHTML拼接字符串
+		
+		/**
+		 * 1.初始化 蓝牙BLE设备
+		 * 2.初始化 回调扫描器
+		 */
+		function initBluetooth () {
+			activity = plus.android.runtimeMainActivity();
+			var PackageManager = plus.android.importClass("android.content.pm.PackageManager");
+			var packageManager = activity.getPackageManager()
+			if (!packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+				mui.toast("该手机不支持BLE4.0蓝牙特性,为您退出页面~");
+				plus.webview.currentWebview().close();
+				return;
+			}
+			
+			var Context = plus.android.importClass("android.content.Context");
+			var bluetoothManager = activity.getSystemService(Context.BLUETOOTH_SERVICE);
+			plus.android.importClass(bluetoothManager);
+			bluetoothAdapter = bluetoothManager.getAdapter();
+			plus.android.importClass(bluetoothAdapter);
+			if (null == bluetoothAdapter) {
+				mui.toast("该手机不支持蓝牙,为您退出页面~");
+				plus.webview.currentWebview().close();
+				return;
+			}
+			
+			// 1.蓝牙扫描结果回调的函数
+			// 2.将扫描出的列表  写入innerHtml列表
+			var blue = document.getElementById('blue');
+			leScanCallback = plus.android.implements("android.bluetooth.BluetoothAdapter$LeScanCallback", {
+	        	"onLeScan": function(device, rssi, scanRecord) {
+	        		plus.android.importClass(device);
+	        		if(null != device) {
+		        		if (isDeviceCF(device)) {
+		        			listArr.push(device);
+			        		list+='<li class="item">'
+								+ '<div class="left" id="device_name">'+device.getName()+'</div>'
+								+ '<div class="right" id="device_addr">'+device.getAddress()+'</div>'
+								+ '</li>';
+			        		blue.innerHTML = list;
+			        	}
+	        		}
+    			}
+			});
+
+			isBluetooth();// 判断蓝牙是否打开
+		}
+		
+		/**
+		 * 判断listArr中是否存在相同的device
+		 * @param {Object} listArr
+		 * @param {Object} device
+		 */
+		function isDeviceCF(device) {
+			plus.android.importClass(device);
+			for(i = 0; i < listArr.length; i++) {
+				if (listArr[i].getAddress() == device.getAddress()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		/**
+		 * 判断蓝牙是否打开
+		 */
+		function isBluetooth() {
+			if (null != bluetoothAdapter) {
+				if (!bluetoothAdapter.isEnabled()) {
+					var BluetoothAdapter = plus.android.importClass("android.bluetooth.BluetoothAdapter");
+					var Intent = plus.android.importClass("android.content.Intent");
+					var intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+					activity.startActivityForResult(intent, 0);
+				} 
+			} else {
+				initBluetooth();
+			}
+		}
+		
+		/**
+		 * 断开连接
+		 */
+		function disconnectBleDev() {
+			// 没实现还
+		}
+		
+		/**
+		 * 延迟关闭扫描
+		 */
+		function scanTimer () {
+			bluetoothAdapter.stopLeScan(leScanCallback);
+			isScan = false;
+			rotate();// 关闭旋转动画
+		}
+		
+		/**
+		 * 扫描设备 功能如下
+		 * 1.如果未打开蓝牙   则自动打开
+		 * 2.如果已连接          则断开连接
+		 * 3.如果正在扫描      则断开扫描
+		 * 4.如果不在扫描      则开始扫描
+		 */
+		function scanLeDevice() {
+			if (null == bluetoothAdapter || !bluetoothAdapter.isEnabled()) {
+				isBluetooth();
+			} else {
+				if (STATE_CONNECTED == mConnectionState) {// 连接已经成功时,不扫描设备,提示是否需要断开连接
+					var btnArray = ['取消', '确定'];
+					mui.confirm('您确定要删除车辆当前信息吗？', '', btnArray, function(e) {
+						if(e.index == "1") {
+							disconnectBleDev();// 断开连接
+						}
+					});
+				} else if (isScan) {// 扫描状态为正在扫描 那么取消扫描
+					clearTimeout(timer);// 关闭自动调用
+					scanTimer();// 手动调用
+				} else {
+					isScan = true;
+					timer = setTimeout(scanTimer, 5000);// 延迟5秒关闭
+					bluetoothAdapter.startLeScan(leScanCallback);// 开始扫描
+					rotate();// 开始旋转动画
+					document.getElementById('blue').innerHTML = '';
+					list = '';
+					listArr = [];
+				}
+			}
+		}
+		
+		$('.blue').addEventListener("longtap", "li", function(){
+     		alert(1);
+		});
+	</script>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left iconfont icon-return" style="line-height: 44px;margin-top: -8px;"></a>
+			<h1 class="mui-title" style="line-height: 44px;" id="header_bt">No.14780</h1>
+			<a class="mui-pull-right dishe mui-icon" onclick="scanLeDevice()" style="margin-top: -5px;line-height: 44px;"><img src="images/dialog_rotate.png" id="rotateImg" class="" width="22" height="22" /></a>
+		</header>
+		<div class="mui-content">
+			<ul class="blue" id="blue">
+				
+			</ul>
+			<div class="bluecon">
+
+			</div>
+			<div class="blue-bot">
+				<div class="blue-time">
+					<div class="blue-det-time">00:00</div>
+					<div class="blue-font">本次开启时间</div>
+				</div>
+				<div class="blue-state">
+					<div class="">设备号：<span id="">无</span></div>
+					<div class="blue-state-det">
+						<div class="det">状态：<span id="">未连接</span></div>
+						<div class="work">工作状态：<span id="">未知</span></div>
+					</div>
+					<div class="blue-btn">
+						<div class="blue-start">
+							<button onclick="initBluetooth()">开始</button>
+						</div>
+						<div class="blue-finsh">
+							<button onclick="bluetooth_list()">停止</button>
+						</div>
+					</div>
+				</div>
+				<div class="blue-apply-com">
+					<button class="blue-apply">申请加时</button>
+					<button class="blue-com">完成订单</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

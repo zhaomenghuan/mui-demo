@@ -1,0 +1,105 @@
+
+*{
+	margin: 0;padding: 0;
+}
+img{
+	border:0;
+}
+li{
+	list-style: none;
+}
+body{
+	background-color: #F2F2F2;
+	color: #333;
+}
+a{
+	color:#333;
+} 
+
+/*common /*/
+/*头部样式修改begin*/
+#header{
+	background: #22a4f2;
+	color:#fff
+}
+.mui-bar-nav {
+	top:0;
+	-webkit-box-shadow:none;
+	box-shadow:none
+}
+.mui-pull-left,.mui-pull-right,.mui-title{
+	color:#fff
+}
+.mui-content>.mui-card:first-child {
+	margin-top:10px
+}
+.mui-slider-indicator .mui-indicator{
+	margin-bottom:-10px
+}   
+.mui-bar-nav~.mui-content{
+	padding-top:0px
+}
+.mui-bar-nav a{
+line-height: 44px;
+}
+#header .mui-badge-warning{
+	color:#fff;
+	background-color:#f74c31 ;
+	position: absolute;
+	right:16px;
+	top:9px;	
+}
+/*头部样式修改end /*/
+.mui-content{
+	margin-top:44px;
+	background-color: #f2f2f2;
+}
+/*底部导航样式修改begin*/
+.mui-icon .mui-badge{
+	background-color:#f74c31 ;
+}
+
+.mui-bar-tab {
+	height:58px;
+}
+.mui-bar-tab .mui-tab-item .mui-icon~.mui-tab-label {
+font-size:14px; 
+line-height: 26px;
+}
+.mui-bar {
+	-webkit-box-shadow:none;   
+	box-shadow:none; 
+	background-color: #fff;
+
+}
+.mui-bar-tab .mui-tab-item.mui-active {
+	color:#22a4f2;	
+}
+/*底部导航样式修改end*/
+.mui-pull-top-canvas {
+	overflow: hidden;
+	background-color: #787878;
+	opacity: 0.8;
+	border-radius: 40px;
+	width: 40px;
+	height: 40px;
+	margin: 0 auto;	
+}
+/*password显示密码*/
+.mui-icon-clear{
+	margin-right: 30px;
+}
+.mui-btn-blue.mui-active:enabled,
+.mui-btn-blue:enabled:active,
+.mui-btn-primary.mui-active:enabled,
+.mui-btn-primary:enabled:active,
+input[type=submit].mui-active:enabled,
+input[type=submit]:enabled:active {
+	color: #fff;
+	border: 1px solid #22A4F2;
+	background-color: #22A4F2
+}
+/*button更改颜色*/
+.code-highlight {
+    background-color: #22A4F2;
+}

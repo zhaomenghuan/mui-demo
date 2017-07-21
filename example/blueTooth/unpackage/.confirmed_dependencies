@@ -1,0 +1,14 @@
+{
+	"index.html": {
+		"href": "index.html",
+		"priority": 0,
+		"resources": [
+			"css/common.css",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/dialog_rotate.png",
+			"js/mui.min.js",
+			"js/jquery-1.11.0.js"
+		]
+	}
+}
