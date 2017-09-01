@@ -79,14 +79,11 @@
 				ddy = dateObj.getFullYear();
 			};
 			dateObj.setFullYear(ddy);
-			//设置月份之前先判断上一个月有多少天，如果上一个月没有31天且今天有事31号，那就先设置日期为上一个月的天数
-			if(dateObj.getDate()=="31"){
-				if(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm)=="30"){
-					dateObj.setDate(30);
-				}else if(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm)< "30"){}{
-					dateObj.setDate(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm));
-				}
-			}				
+			//设置月份之前先判断上个月有多少天,如果上个月天数比当前日期小，就把日期设置为上个月的天数
+			var lastMonthDay = getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm);
+			if(lastMonthDay< dateObj.getDate()){
+				dateObj.setDate(lastMonthDay);
+			}						
 		  	dateObj.setMonth(ddm);
 		  	omonth.innerHTML = getMonth(dateObj)+"月";
 		  	oyear.innerHTML = dateObj.getFullYear()+"年";
@@ -109,14 +106,11 @@
 				ddy = dateObj.getFullYear();
 			};
 			dateObj.setFullYear(ddy);
-			//设置月份之前先判断下一个月有多少天，如果下一个月没有31天且今天有事31号，那就先设置日期为下一个月的天数
-			if(dateObj.getDate()=="31"){
-				if(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm)=="30"){
-					dateObj.setDate(30);
-				}else if(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm)< "30"){}{
-					dateObj.setDate(getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm));
-				}
-			}				
+			//设置月份之前先判断下一个月有多少天,如果下个月天数比当前日期小，就把日期设置为下个月的天数		
+			var nextMonthDay = getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm);
+			if(nextMonthDay < dateObj.getDate()){
+				dateObj.setDate(nextMonthDay);
+			}			
 			dateObj.setMonth(ddm);
 			omonth.innerHTML = getMonth(dateObj)+"月";
 			oyear.innerHTML = dateObj.getFullYear()+"年";
