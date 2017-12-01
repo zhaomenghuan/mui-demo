@@ -54,13 +54,13 @@
 		}
 		// 显示当前时间
 		content.addEventListener(evt.type,function (event) {
-		    if(event.target.tagName=="DIV" && event.target.nodeType=="1" && hasclass(event.target.className,"canChoose")){
+		    if(event.target.tagName.toLowerCase()=="div" && event.target.nodeType=="1" && hasclass(event.target.className,"canChoose")){
 				var day = event.target.innerHTML;
-				var dateObj = new Date(year, month-1, day);
+				dateObj = new Date(getYear(dateObj), getMonth(dateObj)-1, day);
 				var week = getWeek(dateObj);	
 				opt.callback({
-					'year': year,
-					'month': month,
+					'year': getYear(dateObj),
+					'month':  getMonth(dateObj),
 					'day': day,
 					'week': week
 				});
@@ -79,6 +79,11 @@
 				ddy = dateObj.getFullYear();
 			};
 			dateObj.setFullYear(ddy);
+			//设置月份之前先判断上个月有多少天,如果上个月天数比当前日期小，就把日期设置为上个月的天数
+			var lastMonthDay = getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm);
+			if(lastMonthDay< dateObj.getDate()){
+				dateObj.setDate(lastMonthDay);
+			}						
 		  	dateObj.setMonth(ddm);
 		  	omonth.innerHTML = getMonth(dateObj)+"月";
 		  	oyear.innerHTML = dateObj.getFullYear()+"年";
@@ -101,6 +106,11 @@
 				ddy = dateObj.getFullYear();
 			};
 			dateObj.setFullYear(ddy);
+			//设置月份之前先判断下一个月有多少天,如果下个月天数比当前日期小，就把日期设置为下个月的天数		
+			var nextMonthDay = getCurmonDaynum(dateObj,dateObj.getFullYear(),ddm);
+			if(nextMonthDay < dateObj.getDate()){
+				dateObj.setDate(nextMonthDay);
+			}			
 			dateObj.setMonth(ddm);
 			omonth.innerHTML = getMonth(dateObj)+"月";
 			oyear.innerHTML = dateObj.getFullYear()+"年";
@@ -227,9 +237,10 @@
 	}
 	
 	// 获取本月总日数方法
-	function getCurmonDaynum(dateObj){
-		var year=dateObj.getFullYear();
-		var month=dateObj.getMonth();
+	//修改后做了判断，如果传入fullyear 和 curMonth 参数，就可以查询任意年份任一月份有多少天，用于处理31号的问题
+	function getCurmonDaynum(dateObj,fullyear,curMonth) {
+		var year = fullyear?fullyear:dateObj.getFullYear();
+		var month = curMonth?curMonth:dateObj.getMonth();
 		if(isLeapYear(year)){//闰年
 			switch(month) { 
 				case 0: return "31"; break; 
@@ -266,13 +277,14 @@
 	}
 	
 	// 获取本月1号的周值
-	function getCurmonWeeknum(dateObj){
+	function getCurmonWeeknum(dateObj) {
 		var oneyear = new Date();
 		var year = dateObj.getFullYear();
 		var month = dateObj.getMonth(); //0是12月
 		oneyear.setFullYear(year);
-		oneyear.setMonth(month); //0是12月
+		//先设置1号，再改变月份，避免31号的问题
 		oneyear.setDate(1);
-		return oneyear.getDay();  
+		oneyear.setMonth(month); //0是12月
+		return oneyear.getDay();
 	}
 })(window);
