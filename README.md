@@ -64,6 +64,10 @@
 - [cropper](./example/cropper/index.html)：头像裁剪的例子
 - [blueTooth](./example/blueTooth/index.html)：蓝牙的例子，来自网友[佑佑](http://ask.dcloud.net.cn/article/12587)
 
+## 友情链接
+
+- [基于 MUI 构建一个具有 90 +页面的APP应用](https://github.com/EasyTuan/mui-kidApp)
+
 ## faq 列表
 
 - 1.如何获取文件的数据
